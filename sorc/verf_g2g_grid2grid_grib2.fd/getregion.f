@@ -34,6 +34,9 @@ c  INPUT: gribid, integer, requested grib id number, such as 212, 223
 c  OUTPUT: region_id(Ngrid), integer, region id for each grid point
 c          in reference of grib104 
 c
+
+        use gdswzd_mod
+
         integer region_id(*) 
         real region_latlon(2,*)
         integer gribid,id
@@ -241,18 +244,22 @@ c
         end do
 
         !from (i,j) to retrieve lat and long at all (i,j) points
-        call gdswiz(kgds212,iopt,Ngrid,fill,xpts212,ypts212,
-     &       rlon,rlat,nret,lrot,crot,srot)
+c        call gdswiz(kgds212,iopt,Ngrid,fill,xpts212,ypts212,
+c     &       rlon,rlat,nret,lrot,crot,srot)
  
+        call gdswzd(kgds212,iopt,Ngrid,fill,xpts212,ypts212,
+     &       rlon,rlat,nret,crot,srot)
 
         id=104
         call makgds(id, kgds104, gds, lengds, ier)
        
         !from array of lat and long of all points to get xpts104,ypts104, i.e. (i,j) of thse points
         iopt=-1
-        call gdswiz(kgds104,iopt,Ngrid,fill,xpts104,ypts104,
-     &       rlon,rlat,nret,lrot,crot,srot)
+c        call gdswiz(kgds104,iopt,Ngrid,fill,xpts104,ypts104,
+c     &       rlon,rlat,nret,lrot,crot,srot)
 
+        call gdswzd(kgds104,iopt,Ngrid,fill,xpts104,ypts104,
+     &       rlon,rlat,nret,crot,srot)
         open(20, file='grid#104', status='old') 
         read(20, '(20I4)') ig104
 

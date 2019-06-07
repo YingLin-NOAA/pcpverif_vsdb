@@ -561,6 +561,7 @@ C    STEP 2. READ DATA FROM Thined GRIB Forecast file and Thined GRIB Observatio
  
           fgrbfile='fcst.grib.'//trim(namodel(1))
           ifgrb=10+imodel
+          
 
           ensmbr(imodel)=namodel(1)
         
@@ -603,7 +604,7 @@ C    STEP 2. READ DATA FROM Thined GRIB Forecast file and Thined GRIB Observatio
     !2:read observation data
         
        if(imodel.eq.1 ) then
-         call getGRIB2data (42,ogrbfile,obsvdata,uobsv,vobsv,
+         call getGRIB2data (9,ogrbfile,obsvdata,uobsv,vobsv,
      +       levels,numfcst,numvarbl,numlevel,ngrid,
      +       yyobsv,mmobsv,ddobsv,hhobsv,ffobsv,k4,k5,k6,k7,
      +       plevel,namvarbl,Nmodel,namodel(1),namvfyobs(1),
@@ -885,10 +886,11 @@ c     grib got filtered.
           write(*,'(10f10.2)')(fcstdata(nfcst,nvr,nlvl,ij),ij=1,10)      
           write(*,'(10f10.2)')(obsvdata(nfcst,nvr,nlvl,ij),ij=1,10)      
  
-          if(wavemrk(nvr).eq.2) then 
-            call FITWAV_2D(fcst2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
-            call FITWAV_2D(obsv2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
-          else if (wavemrk(nvr).eq.1) then
+          !if(wavemrk(nvr).eq.2) then 
+          !  !call FITWAV_2D(fcst2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
+          !  !call FITWAV_2D(obsv2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
+          !else if (wavemrk(nvr).eq.1) then
+          if (wavemrk(nvr).eq.1) then
             call FITWAV_1D(fcst2d,imax(1),jmax(1),wv1(nvr),wv2(nvr))
             call FITWAV_1D(obsv2d,imax(1),jmax(1),wv1(nvr),wv2(nvr))
           end if
@@ -921,10 +923,11 @@ c     grib got filtered.
             write(*,'(10f10.2)')(ufcst(nfcst,nvr,nlvl,ij),ij=1,10)
             write(*,'(10f10.2)')(uobsv(nfcst,nvr,nlvl,ij),ij=1,10)
 
-          if(wavemrk(nvr).eq.2) then
-            call FITWAV_2D(fcst2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
-            call FITWAV_2D(obsv2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
-          else if (wavemrk(nvr).eq.1) then
+          !if(wavemrk(nvr).eq.2) then
+          !  call FITWAV_2D(fcst2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
+          !  call FITWAV_2D(obsv2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
+          !else if (wavemrk(nvr).eq.1) then
+          if (wavemrk(nvr).eq.1) then
             call FITWAV_1D(fcst2d,imax(1),jmax(1),wv1(nvr),wv2(nvr))
             call FITWAV_1D(obsv2d,imax(1),jmax(1),wv1(nvr),wv2(nvr))
           end if
@@ -956,10 +959,11 @@ c     grib got filtered.
             write(*,'(10f10.2)')(vobsv(nfcst,nvr,nlvl,ij),ij=1,10)
                                                                                                                   
            
-          if(wavemrk(nvr).eq.2) then
-            call FITWAV_2D(fcst2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
-            call FITWAV_2D(obsv2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
-          else if (wavemrk(nvr).eq.1) then
+          !if(wavemrk(nvr).eq.2) then
+          !  call FITWAV_2D(fcst2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
+          !  call FITWAV_2D(obsv2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
+          !else if (wavemrk(nvr).eq.1) then
+          if (wavemrk(nvr).eq.1) then
             call FITWAV_1D(fcst2d,imax(1),jmax(1),wv1(nvr),wv2(nvr))
             call FITWAV_1D(obsv2d,imax(1),jmax(1),wv1(nvr),wv2(nvr))
           end if
@@ -1141,9 +1145,10 @@ c        ------ stats with anomly ---------------------------------------
               write(*,'(10f10.2)')(climdata(nfcst,nvr,nlvl,ij),ij=1,10)
               
 
-             if(wavemrk(nvr).eq.2) then
-              call FITWAV_2D(clim2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
-             else if (wavemrk(nvr).eq.1) then
+             !if(wavemrk(nvr).eq.2) then
+             ! call FITWAV_2D(clim2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
+             !else if (wavemrk(nvr).eq.1) then
+             if (wavemrk(nvr).eq.1) then
               call FITWAV_1D(clim2d,imax(1),jmax(1),wv1(nvr),wv2(nvr))
              end if
 
@@ -1171,9 +1176,10 @@ c        ------ stats with anomly ---------------------------------------
                write(*,*) 'Before anomly U wave:nlvl=',nlvl
                write(*,'(10f10.2)')(uclim(nfcst,nvr,nlvl,ij),ij=1,10)
 
-               if(wavemrk(nvr).eq.2) then
-             call FITWAV_2D(clim2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
-               else if (wavemrk(nvr).eq.1) then
+             !  if(wavemrk(nvr).eq.2) then
+             !call FITWAV_2D(clim2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
+             !  else if (wavemrk(nvr).eq.1) then
+              if (wavemrk(nvr).eq.1) then
              call FITWAV_1D(clim2d,imax(1),jmax(1),wv1(nvr),wv2(nvr))
                end if
 
@@ -1198,9 +1204,10 @@ c        ------ stats with anomly ---------------------------------------
                write(*,*) 'Before anomly V wave:nlvl=',nlvl
                write(*,'(10f10.2)')(uclim(nfcst,nvr,nlvl,ij),ij=1,10)
 
-               if(wavemrk(nvr).eq.2) then
-            call FITWAV_2D(clim2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
-               else if (wavemrk(nvr).eq.1) then
+            !   if(wavemrk(nvr).eq.2) then
+            !call FITWAV_2D(clim2d,imax(1),jmax(1),wv1(nvr),wv2(nvr),0)
+            !   else if (wavemrk(nvr).eq.1) then
+             if (wavemrk(nvr).eq.1) then
             call FITWAV_1D(clim2d,imax(1),jmax(1),wv1(nvr),wv2(nvr))
                end if
 

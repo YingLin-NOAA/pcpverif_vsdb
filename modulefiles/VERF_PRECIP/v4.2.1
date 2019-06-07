@@ -1,7 +1,7 @@
 #%Module######################################################################
 ##                                                           Ying.Lin@noaa.gov
 ##                                                           NOAA/NWS/NCEP/EMC
-## VERF_PRECIP v4.2.0
+## VERF_PRECIP v4.2.1
 ##_____________________________________________________
 proc ModulesHelp { } {
 puts stderr "Set environment veriables for VERF_PRECIP"
@@ -10,7 +10,7 @@ puts stderr "for the Intel Compiler Suite $version\n"
 }
 module-whatis "VERF_PRECIP whatis description"
 
-set ver v4.2.0
+set ver v4.2.1
 
 set sys [uname sysname]
 set lname verf_precip
@@ -20,17 +20,20 @@ setenv COMP ifort
 # Known conflicts ?
 
 # Loading Intel Compiler Suite
-module load ics/15.0.1
+module load ips/18.0.1.163
+module load impi/18.0.1
 
 # Loading nceplibs modules
-module load bacio/v2.0.2
-module load w3nco/v2.0.6
-module load w3emc/v2.2.0
+module load bacio/2.0.2
+module load w3nco/2.0.6
+module load w3emc/2.3.0
 # - for verf_href--
-module load ip/v2.0.0
-module load sp/v2.0.2
-module load g2/v2.5.0
-module load jasper/v1.900.1
-module load png/v1.2.44
-module load z/v1.2.6
+module load ip/3.0.1
+module load sp/2.0.2
+module load g2/3.1.0
+module load jasper/1.900.1
+##module load png/1.2.44 ??
+module load libpng/1.2.59
+##module load z/1.2.6
+module load zlib/1.2.11
 # - for verf_href--

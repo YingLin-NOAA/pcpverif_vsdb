@@ -6,7 +6,8 @@
 #
 
 FC=     ifort
-INC= /nwprod/lib/incmod/g2_4
+INC= ${G2_INC4}
+
 BINDIR= ../../exec
 LIBS= ${IP_LIB4} ${W3NCO_LIB4} ${W3EMC_LIB4} ${BACIO_LIB4}  ${SP_LIB4} ${G2_LIB4} ${JASPER_LIB} ${PNG_LIB} ${Z_LIB} 
 FFLAGS =        -O3 -g -convert big_endian -I $(INC)
