@@ -34,7 +34,7 @@ export vdate=$1
 export vacc=24
 vday=`echo $vdate | cut -c 1-8`
 yyyymm=`echo $vday | cut -c 1-6`
-vdaym1=`$finddate ${vday} d-1`
+vdaym1=`finddate.sh ${vday} d-1`
 
 logfile=${COMOUT}.${vday}/medley_log.$vday
 typeset -Z2 fhour

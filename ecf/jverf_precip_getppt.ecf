@@ -1,14 +1,20 @@
-#!/bin/ksh
+#!/bin/bash
 #BSUB -J jverf_precip_getppt
-#BSUB -oo /ptmpp1/Ying.Lin/cron.out/getppt.%J
-#BSUB -eo /ptmpp1/Ying.Lin/cron.out/getppt.%J
-#BSUB -cwd /stmpp1/Ying.Lin
+#BSUB -o /gpfs/dell2/ptmp/Ying.Lin/cron.out/getppt.%J
+#BSUB -e /gpfs/dell2/ptmp/Ying.Lin/cron.out/getppt.%J
 #BSUB -n 1
 #BSUB -q "dev"
 #BSUB -W 1:25
 #BSUB -P VERF-T2O
+#BSUB -R span[ptile=1]
 
 set -x 
+module purge
+module load ips/18.0.1.163    # for prod_util
+module load prod_util/1.1.2
+module load prod_envir/1.0.2
+module load grib_util/1.1.0
+
 export envir=dev
 export cyc=00
 export job=verf_precip_getppt
@@ -62,17 +68,16 @@ if [ "$RUN_ENVIR" = dev ]; then        ### for dev
   . /u/Ying.Lin/.profile 
 
 # Most frequently made changes: 
-  export HOMEverf_precip=/meso/save/$LOGNAME/pcpverif/nextjif
+  export HOMEverf_precip=/gpfs/dell2/emc/verification/noscrub/Ying.Lin/pcpverif_vsdb
   export PARMverf_precip=$HOMEverf_precip/parm.dev.wcoss
-  export DATAverf_precip=/ptmpp1/$LOGNAME/verf.dat
+  export DATAverf_precip=/gpfs/dell2/ptmp/$LOGNAME/verf.dat
   export bsubnext=Y   # bsub verfgen24 and verfgen03?  
 # ------------------------------------------------------
   # DATAROOT is NCO-speak for 'wrkdir'.
-  export COMROOT=/com               # needed for setpdy,e g. /com/date/t20z
-  export DATAROOT=/stmpp1/$LOGNAME/tmpnwprd
+  export DATAROOT=/gpfs/dell2/stmp/$LOGNAME/tmpnwprd
 # export vday=20160204
 else                                   ### for prod/para/test
-  export HOMEverf_precip=/nw${envir}/verf_precip.v.4.0.0
+  export HOMEverf_precip=/nw${envir}/verf_precip.v.4.3.0
 fi # end of 'is this dev?' 
 
 $HOMEverf_precip/jobs/JVERF_PRECIP_GETPPT

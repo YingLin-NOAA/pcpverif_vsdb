@@ -38,6 +38,9 @@ export SENDECF=${SENDECF:-YES}
 #
 #################################################################
 
+# To locate job output quickly:
+echo 'Actual output starts here:'
+
 if [ "$RUN_ENVIR" = dev ]    ### For Developers
 then
   # PARMverf_precip is set in the ecf/sms script.  It is either 'parm' or
@@ -118,25 +121,8 @@ export FIXverf_precip=${FIXverf_precip:-$HOMEverf_precip/fix}
 ###################################
 # Set up the UTILITIES
 ###################################
-# -----------------  Note for Dev -----------------------------------
-# Zeus' /nwprod is acutally in /scratch2/portfolios/NCEPDEV/rstprod/nwprod. 
-# Specify NWPROD for zeus in sms.zeus script.  
-#
-# Zeus does not have a working ndate and wgrib (note: the files are in Zeus
-# /nwprod directories, but they do not work, as of 10 Apr 2013).  
-# 'ndate' and WGRIBpath are specified for zeus in the sms.zeus file.
-# -----------------  Note for Dev -----------------------------------
-export NWPROD=${NWPROD:-/nwprod}
-export utilscript=$NWPROD/util/ush
-export utilexec=$NWPROD/util/exec
 
-export WGRIBpath=${WGRIBpath:-$utilexec}
-# for GRIB2 input files:
-export WGRIB2path=${WGRIB2path:-$utilexec}
-export WGRIB2=$WGRIB2path/wgrib2
-
-export ndate=${ndate:-$utilexec/ndate}
-export finddate=$utilscript/finddate.sh
+# -----------------  Note for Dev -----------------------------------
 
 # set 'bsubnext' to 'N' unless specified in the ECF script.  This is one of
 # parameters (used only in dev mode) telling the script whether to bsub
@@ -145,14 +131,14 @@ export bsubnext=${bsubnext:-N}
 
 # If the calling script specifies a $vday value, then PDY=$vday+1.
 if [ "$vday" != "" ]; then
-  PDY=`$finddate $vday d+1`
+  PDY=`finddate.sh $vday d+1`
 fi
 
 # /com/date is maintained by NCO on WCOSS, but it does not exist 
 #   on Theia.  Do not use setpdy on Theia.  
 if [ $machine = theia ]; then 
   today=`date -u +%Y%m%d`  
-  PDYm1=`$finddate $today d-1`
+  PDYm1=`finddate.sh $today d-1`
 else
   # Run setpdy and initialize PDY variables
   setpdy.sh
