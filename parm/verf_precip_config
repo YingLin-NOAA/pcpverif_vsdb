@@ -33,7 +33,7 @@ then
 #   disk, activate the alternative COMINpcpanl (don't forget to change this back
 #   right away)
 #  export COMINpcpanl=/ptmp/Ying.Lin/com/hourly/prod
-  export COMINpcpanl=/com2/pcpanl/prod
+  export COMINpcpanl=/gpfs/dell2/nco/ops/com/pcpanl/prod
   export COMCCPA=/com2/ccpa/prod/ccpa
   export SENDCOM=YES
   export SENDSMS=NO
@@ -53,7 +53,7 @@ then
   export DCOM=/dcom/us007003
   export COMOUT=/com/verf/${envir}/precip
   export COMVSDB=/com/verf/${envir}/vsdb/precip
-  export COMINpcpanl=/com2/pcpanl/prod
+  export COMINpcpanl=/gpfs/dell2/nco/ops/com/pcpanl/prod
   export COMCCPA=/com2/ccpa/prod/ccpa
 
   export SENDCOM=YES
@@ -74,7 +74,7 @@ then
   export DCOM=/dcom/us007003
   export COMOUT=/com/verf/${envir}/precip
   export COMVSDB=/com/verf/${envir}/vsdb/precip
-  export COMINpcpanl=/com2/pcpanl/prod
+  export COMINpcpanl=/gpfs/dell2/nco/ops/com/pcpanl/prod
   export COMCCPA=/com2/ccpa/prod/ccpa
 
   export SENDCOM=YES

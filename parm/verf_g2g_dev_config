@@ -3,21 +3,21 @@
 # the J-Job scripts to run the grid2grid verifications
 ##################################################################
 export COMRAP=/com2/rap/prod/rap
-export COMSREF=/com2/sref/prod/sref
+export COMSREF=/gpfs/dell2/nco/ops/com/sref/prod/sref
 export COMHIRESW=/gpfs/hps/nco/ops/com/hiresw/prod/hiresw
-export COMNAM=/com2/nam/prod/nam
-export COMNAMNEST=/com2/nam/prod/nam
-export COMNAMFIREWX=/com2/nam/prod/nam
+export COMNAM=/gpfs/dell/nco/ops/com/nam/prod/nam
+export COMNAMNEST=/gpfs/dell1/nco/ops/com/nam/prod/nam
+export COMNAMFIREWX=/gpfs/dell1/nco/ops/com/nam/prod/nam
 #export COMMOSAIC=/com2/hourly/prod/radar
 export COMMOSAIC=/com/hourly/prod/radar
-export COMURMA=/com2/urma/prod/urma2p5
+export COMURMA=/gpfs/dell2/nco/ops/com/urma/prod/urma2p5
 export COMBUFR=/com/hourly/prod
 export COMGFS=/com2/gfs/prod/gfs
 export COMHRRR=/com2/hrrr/prod/hrrr
 export COMGFSANL=/com2/gfs/prod/gfs
-export COMGEFS=/com2/gens/prod/gefs
+export COMGEFS=/gpfs/dell2/nco/ops/com/gens/prod/gefs
 export COMNDAS=/com2/nam/prod/ndas
-export COMNAEFS=/com2/gens/prod/cmce
+export COMNAEFS=/gpfs/hps/nco/ops/com/naefs/prod/cmce
 export COMGLMP=/com2/glmp/prod/glmp
 export COMHREF=${COMHREF:-/gpfs/hps/nco/ops/com/hiresw/prod/href}
 export DCOMAFWA=/dcom/us007003

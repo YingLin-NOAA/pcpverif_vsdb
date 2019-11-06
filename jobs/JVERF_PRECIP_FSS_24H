@@ -158,7 +158,7 @@ export vday=${vday:-$PDYm1}
 export COMIN=${COMIN:-/com/verf/${envir}/precip}
 export DCOM=${DCOM:-/dcom/us007003}
 export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
-export COMCCPA=${COMCCPA:-/com/gens/prod}
+export COMCCPA=${COMCCPA:-/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa}
 
 export COMOUT=${COMOUT:-/com/verf/${envir}/precip}
 export COMVSDB=${COMVSDB:-/com/verf/${envir}/vsdb/precip}
