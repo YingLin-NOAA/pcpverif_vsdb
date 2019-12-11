@@ -114,35 +114,18 @@ export FIXverf_precip=${FIXverf_precip:-$HOMEverf_precip/fix}
 ###################################
 # Set up the UTILITIES
 ###################################
-# -----------------  Note for Dev -----------------------------------
-# Zeus' /nwprod is acutally in /scratch2/portfolios/NCEPDEV/rstprod/nwprod. 
-# need to define EXECutil for wwgrib.  It is normally the same as 
-# /nwprod/util/exec, but Zeus does not have a working /nwprod/util/exec/wgrib.
-# WGRIBpath is defined in the Zeus sms script. 
-# ------------------------------------------------------------------
+# for wwgrib: find the path of wgrib2: 
+export EXECutil=`echo $WGRIB2 | sed 's/\/wgrib2//'`
 
-export NWPROD=${NWPROD:-/nwprod}
-export utilscript=$NWPROD/util/ush
-export utilexec=$NWPROD/util/exec
-
-export finddate=$utilscript/finddate.sh
-
-# for wwgrib:
-export EXECutil=${WGRIBpath:-$utilexec}
-
-. /usrx/local/Modules/default/init/ksh
-module load grib_util
-
-# If the calling script specifies a $vday value, then PDY=$vday+1.
+# If the calling script specifies a $vday value, then PDY=$vday+2.
 if [ "$vday" != "" ]; then
-  export PDY=`$finddate $vday d+2`
+  export PDY=`date -d "$vday + 2 day" +%Y%m%d`
 fi
 
 # /com/date is maintained by NCO on the CCS and WCOSS, but it does not exist 
 #   on Theia.  Do not use setpdy on Theia.  
 if [ $machine = theia ]; then 
-  today=`date -u +%Y%m%d`  
-  PDYm2=`$finddate $today d-2`
+  PDYm2=`date +%Y%m%d -d "2 days ago"`
 else
   # Run setpdy and initialize PDY variables
   setpdy.sh

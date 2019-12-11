@@ -29,18 +29,8 @@ export VERFANL=CCPA
 # Rename the file to ccpa.${vdate}.03h, where $vdate is the ending 
 # time of the 3-hourly accumulation period. 
 #################################################################
-vdayp1=`$finddate $vday d+1`
-# old:
-#cp $COMCCPA.$vday/00/ccpa/ccpa_conus_hrap_t00z_03h   ccpa.${vday}00.03h
-#cp $COMCCPA.$vday/06/ccpa/ccpa_conus_hrap_t03z_03h   ccpa.${vday}03.03h
-#cp $COMCCPA.$vday/06/ccpa/ccpa_conus_hrap_t06z_03h   ccpa.${vday}06.03h
-#cp $COMCCPA.$vday/12/ccpa/ccpa_conus_hrap_t09z_03h   ccpa.${vday}09.03h
-#cp $COMCCPA.$vday/12/ccpa/ccpa_conus_hrap_t12z_03h   ccpa.${vday}12.03h
-#cp $COMCCPA.$vday/18/ccpa/ccpa_conus_hrap_t15z_03h   ccpa.${vday}15.03h
-#cp $COMCCPA.$vday/18/ccpa/ccpa_conus_hrap_t18z_03h   ccpa.${vday}18.03h
-#cp $COMCCPA.$vdayp1/00/ccpa/ccpa_conus_hrap_t21z_03h ccpa.${vday}21.03h
+vdayp1=`date -d "$vday + 1 day" +%Y%m%d`
 
-# new:
 cp $COMCCPA.$vday/00/ccpa.t00z.03h.hrap.conus   ccpa.${vday}00.03h
 cp $COMCCPA.$vday/06/ccpa.t03z.03h.hrap.conus   ccpa.${vday}03.03h
 cp $COMCCPA.$vday/06/ccpa.t06z.03h.hrap.conus   ccpa.${vday}06.03h

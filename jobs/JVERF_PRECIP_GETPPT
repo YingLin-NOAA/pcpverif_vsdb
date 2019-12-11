@@ -47,7 +47,6 @@ then
   # parm.dev.$machine, under $HOMEverf_precip.  
   . $PARMverf_precip/verf_precip_config
   export DATAROOT=${DATAROOT:-/tmpnwprd2}
-  export jlogfile=${jlogfile:-$DATAROOT/jlogfile}
   export SENDDBN=NO
   if [ $debug = N ]; then
     RM_DATA=YES
@@ -131,14 +130,13 @@ export bsubnext=${bsubnext:-N}
 
 # If the calling script specifies a $vday value, then PDY=$vday+1.
 if [ "$vday" != "" ]; then
-  PDY=`finddate.sh $vday d+1`
+  PDY=`date -d "$vday + 1 day" +%Y%m%d`
 fi
 
 # /com/date is maintained by NCO on WCOSS, but it does not exist 
 #   on Theia.  Do not use setpdy on Theia.  
 if [ $machine = theia ]; then 
-  today=`date -u +%Y%m%d`  
-  PDYm1=`finddate.sh $today d-1`
+  PDYm1=`date +%Y%m%d -d "1 day ago"`
 else
   # Run setpdy and initialize PDY variables
   setpdy.sh
@@ -151,7 +149,6 @@ export vday=${vday:-$PDYm1}
 # Set up the INPUT and OUTPUT directories
 #################################################
 export COMIN=${COMIN:-/com/verf/${envir}/precip}
-export DCOM=${DCOM:-/dcom/us007003}
 export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
 export COMOUT=${COMOUT:-/com/verf/${envir}/precip}
 

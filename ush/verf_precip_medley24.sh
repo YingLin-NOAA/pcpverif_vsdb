@@ -34,7 +34,7 @@ export vdate=$1
 export vacc=24
 vday=`echo $vdate | cut -c 1-8`
 yyyymm=`echo $vday | cut -c 1-6`
-vdaym1=`$finddate ${vday} d-1`
+vdaym1=`date -d "$vday - 1 day" +%Y%m%d`
 
 logfile=${COMOUT}.${vday}/medley_log.$vday
 typeset -Z2 fhour
@@ -52,7 +52,7 @@ do
   
 # determine starting time of forecast.
   export fhour=`echo $vtime |awk -F"_" '{print $2}'` 
-  sdate=`$ndate -${fhour} $vdate`
+  sdate=`$NDATE -${fhour} $vdate`
   echo medley_${sdate}_${vtime}.212 > input_avg$fhour
   for model in $models
   do

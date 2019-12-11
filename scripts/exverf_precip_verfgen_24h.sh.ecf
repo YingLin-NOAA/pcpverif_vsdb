@@ -10,7 +10,7 @@
 set -x
 
 export vdate=${vday}12  # vday exported from J-job
-vdaym1=`$finddate $vday d-1`
+vdaym1=`date -d "$vday - 1 day" +%Y%m%d`
 
 mkdir $DATA/vsdb 
 

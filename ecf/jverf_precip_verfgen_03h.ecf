@@ -1,13 +1,13 @@
-#!/bin/ksh 
+#!/bin/bash
 #BSUB -J jverf_precip_verfgen03
-#BSUB -oo /ptmpp1/Ying.Lin/cron.out/verfgen03.%J
-#BSUB -eo /ptmpp1/Ying.Lin/cron.out/verfgen03.%J
-#BSUB -cwd /stmpp1/Ying.Lin
+#BSUB -o /gpfs/dell2/ptmp/Ying.Lin/cron.out/verfgen24.%J
+#BSUB -e /gpfs/dell2/ptmp/Ying.Lin/cron.out/verfgen24.%J
 #BSUB -L /bin/sh
 #BSUB -n 1
 #BSUB -q "dev"
 #BSUB -W 2:00
 #BSUB -P VERF-T2O
+#BSUB -R span[ptile=1]
 
 # why 'BSUB -L /bin/sh' above: this job is bsub'd at the end of GETPPT.
 # 'BSUB -L login_shell ensures that variables exported by GETPPT (e.g. vday)

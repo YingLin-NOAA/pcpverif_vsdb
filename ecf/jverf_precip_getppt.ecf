@@ -22,6 +22,8 @@ export RUN_ENVIR=dev
 export retro=N
 export debug=N
 
+export version=v4.3.2
+
 # This script has three optional arguments if run interactively.  WCOSS LSF 
 # (bsub) does not accept arguments in the LSF script, in that case, set up
 # up as environmental variables.  To make this thing more flexible, arg 2 
@@ -65,9 +67,9 @@ fi
 if [ "$RUN_ENVIR" = dev ]; then        ### for dev 
 # ------------------------------------------------------
 # Most frequently made changes: 
-  export HOMEverf_precip=/gpfs/dell2/emc/verification/noscrub/Ying.Lin/verif_precip.v4.3.2
+  export HOMEverf_precip=/gpfs/dell2/emc/verification/noscrub/Ying.Lin/verf_precip.${version}
   export PARMverf_precip=$HOMEverf_precip/parm
-  export DATAverf_precip=/gpfs/dell2/ptmp/$LOGNAME/verf.dat
+  export DATAverf_precip=/gpfs/dell2/ptmp/$LOGNAME/verf.dat.${version}
   export bsubnext=Y   # bsub verfgen24 and verfgen03?  
 # ------------------------------------------------------
   # DATAROOT is NCO-speak for 'wrkdir'.

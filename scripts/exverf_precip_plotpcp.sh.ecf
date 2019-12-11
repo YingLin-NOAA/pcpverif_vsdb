@@ -123,7 +123,7 @@ do
 
     for fhr in $hourlist
     do
-      pdate=`$ndate -$fhr $vdate`
+      pdate=`$NDATE -$fhr $vdate`
       fhr0=`expr $fhr - $vhour`
       GBFILE=${mod}_${pdate}_${fhr0}_${fhr}.$grid
       if [ $region = CONUS ]; then
@@ -155,7 +155,7 @@ if [[ $RUN_ENVIR = dev && $domain = conus ]]; then
     cyc=`echo $file | sed -r 's/(\s?\.212)//' | awk -F"_" '{print $2}'`
     # get forecast hour: 
     fhr=`echo $file | sed -r 's/(\s?\.212)//'| awk -F"_" '{print $4}'`
-    ukvdate=`$ndate +$fhr $cyc`
+    ukvdate=`$NDATE +$fhr $cyc`
     python $UTLDEVverf_precip/python/plt_anyfld_grb.py $file
     ukpltgif=ukmo.v${ukvdate}.${fhr}h.gif
     convert $file.png $ukpltgif

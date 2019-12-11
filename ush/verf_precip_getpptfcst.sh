@@ -232,7 +232,7 @@ do
             mv grib2.file $TMP2OUTFILE
             if [ $convert = yes ]; then
               TMPOUTFILE=${TMPOUTPFIX}${fcycle}_${fhr1}_${fhr2}
-              $utilexec/cnvgrib -g21 $TMP2OUTFILE $TMPOUTFILE
+              $CNVGRIB -g21 $TMP2OUTFILE $TMPOUTFILE
             else
               # if the model name is 'wgnegfs', do not convert to grib1.  Copy
               # to COMOUT directly.  
@@ -249,7 +249,7 @@ do
                   cp $TMP2OUTFILE ${OUTFILE}.grb2
                 fi
               else
-                $utilexec/cnvgrib -g21 $TMP2OUTFILE $OUTFILE
+                $CNVGRIB -g21 $TMP2OUTFILE $OUTFILE
               fi
             fi
           done
@@ -330,8 +330,6 @@ fi
 
 if [ $convert = yes ]; then
   cd $DATA/$model
-
-  $utilscript/setup.sh
 #
   if [[ $model = ecmwf || $model = jma ]]; then
     if [ $model = ecmwf ]; then

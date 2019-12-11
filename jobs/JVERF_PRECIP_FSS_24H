@@ -124,15 +124,8 @@ export FIXverf_precip=${FIXverf_precip:-$HOMEverf_precip/fix}
 # /nwprod/util/exec, but Zeus does not have a working /nwprod/util/exec/wgrib.
 # WGRIBpath is defined in the Zeus sms script. 
 # -------------------------------------------------------------------
-export NWPROD=${NWPROD:-/nwprod}
-export utilscript=$NWPROD/util/ush
-export utilexec=$NWPROD/util/exec
-# for wwgrib:
-export EXECutil=${WGRIBpath:-$utilexec}
-
-export ndate=${ndate:-$utilexec/ndate}
-export finddate=$utilscript/finddate.sh
-export copygb=${copygb:-$utilexec/copygb}
+# for wwgrib: find the path of wgrib2: 
+export EXECutil=`echo $WGRIB2 | sed 's/\/wgrib2//'`
 
 # If the calling script specifies a $vday value, then PDY=$vday+1.
 if [ "$vday" != "" ]; then

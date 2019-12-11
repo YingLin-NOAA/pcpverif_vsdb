@@ -48,9 +48,9 @@ cd $DATA
 
 export YWGRIB=$USHverf_precip/verf_precip_ywgrib.pl
 export day=$vday # (vday exported from J-job)
-export daym1=`$finddate ${day} d-1`
-export dayp1=`$finddate ${day} d+1`
-export dayp2=`$finddate ${day} d+2`
+export daym1=`date -d "$day - 1 day" +%Y%m%d`
+export dayp1=`date -d "$day + 1 day" +%Y%m%d`
+export dayp2=`date -d "$day + 2 day" +%Y%m%d`
 export yymmdd=`echo $day |cut -c3-8`
 export mmdd=`echo $day |cut -c5-8`
 export mmddm1=`echo $daym1 |cut -c5-8`
@@ -78,9 +78,8 @@ typeset -R3 -Z fhr3
 # The others (JMA, METFR, UKMO) can be fed to brkout_fcst directly
 #########################################################################
 
-export DCOM=${DCOM:-/dcom/us007003}
-export ICOM=$DCOM/$day/qpf_verif
-export ICOMm1=$DCOM/$daym1/qpf_verif
+export ICOM=$DCOMROOT/prod/$day/qpf_verif
+export ICOMm1=$DCOMROOT/prod/$daym1/qpf_verif
 
 # Create 'import' directory to store re-named ECMWF files and cnvgrib'd UKMO
 # files:
@@ -108,7 +107,7 @@ if [ $run_cmc = 1 ]; then
   for file in cmc_${day}00_012_036 cmc_${day}12_000_024 cmc_${day}12_024_048
   do
     if [ -s $ICOM/$file ]; then
-      $utilexec/cnvgrib -g21 $ICOM/$file $COMOUT.$day/$file
+      $CNVGRIB -g21 $ICOM/$file $COMOUT.$day/$file
     else
       echo $ICOM/$file >> $LOG
     fi
@@ -121,7 +120,7 @@ if [ $run_cmcglb = 1 ]; then
       cmcglb_${day}12_000_024 cmcglb_${day}12_024_048 cmcglb_${day}12_048_072
   do 
     if [ -s $ICOM/$file.grb2 ]; then
-      $utilexec/cnvgrib -g21 $ICOM/$file.grb2 $COMOUT.$day/$file
+      $CNVGRIB -g21 $ICOM/$file.grb2 $COMOUT.$day/$file
     else
       echo $ICOM/$file.grb2 >> $LOG
     fi
@@ -136,7 +135,7 @@ if [ $run_dwd = 1 ]; then
     if [ -s $ICOM/$file ]; then
       # 2015/1/28: the suffix of intermediate file name below needs to be 
       # '.tmp' - it's hardwired for DWD pcpconform.  Don't change it. 
-      $utilexec/cnvgrib -g21 $ICOM/$file $file.tmp
+      $CNVGRIB -g21 $ICOM/$file $file.tmp
       if [ $? = 0 -a -s $file.tmp ]; then 
         $EXECverf_precip/verf_precip_pcpconform dwd $file.tmp $file
         cp $file $COMOUT.$day/.
@@ -151,7 +150,7 @@ if [ $run_ukmo = 1 ]; then
   cd $IMPORT
   for file in ukmo.${day}00 ukmo.${day}12
   do
-    $utilexec/cnvgrib -g21 $ICOM/$file $file.grb1
+    $CNVGRIB -g21 $ICOM/$file $file.grb1
   done
 fi 
 
@@ -219,14 +218,14 @@ EOF
 obs
 rtmax.
 EOF
-    rdate=`$ndate -2 $accdate`
+    rdate=`$NDATE -2 $accdate`
     while [ $rdate -le $accdate ]
     do
       rday=`echo $rdate | cut -c 1-8`
       cp $RTMAROOT.$rday/pcprtma.$rdate .
       err=$?
       if [ $err -eq 0 ]; then
-        $utilexec/cnvgrib -g21 pcprtma.$rdate pcprtma.$rdate.grb1
+        $CNVGRIB -g21 pcprtma.$rdate pcprtma.$rdate.grb1
         echo pcprtma.$rdate.grb1 >> input_acc3h_rtma
       else
         rtmaflag=N
@@ -236,14 +235,14 @@ EOF
       cp $RTMAXROOT.$rday/pcprtma.$rdate pcprtmax.${rdate}
       err=$?
       if [ $err -eq 0 ]; then
-        $utilexec/cnvgrib -g21 pcprtmax.$rdate pcprtmax.$rdate.grb1
+        $CNVGRIB -g21 pcprtmax.$rdate pcprtmax.$rdate.grb1
         echo pcprtmax.$rdate.grb1 >> input_acc3h_rtmax
       else
         rtmaxflag=N
         echo Copying $RTMAROOT.$rday/pcprtmax.$rdate failed
       fi
 
-      rdate=`/nwprod/util/exec/ndate +1 $rdate`
+      rdate=`$NDATE +1 $rdate`
     done  # finished processing a 3hr segment
 #
     if [ $rtmaflag = Y ]; then
@@ -254,7 +253,7 @@ EOF
       $EXECverf_precip/nam_stage4_acc < input_acc3h_rtmax
     fi
  
-    accdate=`/nwprod/util/exec/ndate +3 $accdate`
+    accdate=`$NDATE +3 $accdate`
   done # looping through 3hr segments ending {daym1}15, ${daym1}18 ... ${day}12
 
   cp rtma.${daym1}15.03h $COMOUT.$daym1/rtma_${daym1}12_000_003
