@@ -115,7 +115,7 @@ while [ $linecnt -le $nline ]; do
     else
       if [ $lwgrb2out -eq 1 ]; then
         mv grib2.file $OTPUTF2
-        $utilexec/cnvgrib -g21 $OTPUTF2 $OTPUTF
+        $CNVGRIB -g21 $OTPUTF2 $OTPUTF
       else
         # for NDAS, there's no reason to have duplicate APCP/LSPA records in a
         # model output (some arw output used to have duplicate APCPs in early

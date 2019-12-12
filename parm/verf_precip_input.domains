@@ -64,8 +64,8 @@ prarw|      |   |000|/gpfs/hps/nco/ops/com/hiresw/prod/hiresw._DAY_/hiresw.t%{cy
 prarw2|      |   |000|/gpfs/hps/nco/ops/com/hiresw/prod/hiresw._DAY_/hiresw.t%{cyc}%z.arw_5km.f%{fhr}%.prmem2.grib2|_DAY_/prarw2_|06 18|03|48|03|03|grb2
 prnmmb|      |   |000|/gpfs/hps/nco/ops/com/hiresw/prod/hiresw._DAY_/hiresw.t%{cyc}%z.nmmb_5km.f%{fhr}%.pr.grib2|_DAY_/prnmmb_|06 18|03|48|03|03|grb2
 ecmwf|convert  |228|000|import/UWD._DAYm1_12.%{fhr}%|_DAYm1_/ecmwf_|12|24|72|24|
-jma|convert    |   |000|/dcom/us007003/_DAY_/qpf_verif/jma__DAY_%{cyc}%00.grib|_DAY_/jma_|00 12|06|84|06|
-metfr|   |   |000|/dcom/us007003/_DAYm1_/qpf_verif/METFRA_%{cyc}%__DAYm1_|_DAYm1_/metfr_|00 12|12|84|12|
+jma|convert    |   |000|/gpfs/dell1/nco/ops/dcom/prod/_DAY_/qpf_verif/jma__DAY_%{cyc}%00.grib|_DAY_/jma_|00 12|06|84|06|
+metfr|   |   |000|/gpfs/dell1/nco/ops/dcom/prod/_DAYm1_/qpf_verif/METFRA_%{cyc}%__DAYm1_|_DAYm1_/metfr_|00 12|12|84|12|
 ukmo|convert |255|000|import/ukmo._DAY_%{cyc}%.grb1|_DAY_/ukmo_|00 12|12|96|12|
 rap|   |   |000|/gpfs/hps/nco/ops/com/rap/prod/rap._DAY_/rap.t%{cyc}%z.awip32f%{fhr}%.grib2|_DAY_/rap_|03 09 15 21|01|39|01|01|grb2
 rap|   |   |000|/gpfs/hps/nco/ops/com/rap/prod/rap._DAY_/rap.t%{cyc}%z.awip32f%{fhr}%.grib2|_DAY_/rap_|00 06 12 18|01|21|01|01|grb2
@@ -104,4 +104,4 @@ srnmbp6|       |   |000|/gpfs/dell2/nco/ops/com/sref/prod/sref._DAYm1_/%{cyc}%/p
 srmean|      |   |000|/gpfs/dell2/nco/ops/com/sref/prod/sref._DAYm1_/%{cyc}%/ensprod/sref.t%{cyc}%z.pgrb212.mean_fvs.f%{fhr}%|_DAYm1_/srmean_|03 09 15 21|03|87|03|
 srfreqm|       |   |000|/gpfs/dell2/nco/ops/com/sref/prod/sref._DAYm1_/%{cyc}%/ensprod_biasc/meanprecip.sref.f%{fhr}%|_DAYm1_/srfreqm_|03 09 15 21|03|87|03|
 firewx|       |   |000|/gpfs/dell1/nco/ops/com/nam/prod/nam._DAY_/nam.t%{cyc}%z.firewxnest.hiresf%{fhr}%.tm00.grib2|_DAY_/firewx_|00 06 12 18|01|36|01|01|grb2
-nssl4arw|       |   |000|/dcom/us007003/_DAY_/wgrbbul/nssl_wrf/wrf4nssl__DAY_%{cyc}%.f%{fhr}%|_DAY_/nssl4arw_|00 12|03|36|03|
+nssl4arw|       |   |000|/gpfs/dell1/nco/ops/dcom/prod/_DAY_/wgrbbul/nssl_wrf/wrf4nssl__DAY_%{cyc}%.f%{fhr}%|_DAY_/nssl4arw_|00 12|03|36|03|

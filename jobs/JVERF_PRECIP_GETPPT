@@ -120,6 +120,8 @@ export FIXverf_precip=${FIXverf_precip:-$HOMEverf_precip/fix}
 ###################################
 # Set up the UTILITIES
 ###################################
+# WGRIBpath is needed in ush/verf_precip_ywgrib.pl:
+export WGRIBpath=/gpfs/dell1/nco/ops/nwprod/grib_util.v1.1.1/exec
 
 # -----------------  Note for Dev -----------------------------------
 
