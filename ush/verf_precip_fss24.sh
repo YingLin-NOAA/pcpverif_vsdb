@@ -20,10 +20,6 @@ export vgrid=$2
 cycles=$3
 frange=$4
 
-# Zeus does not have a functioning 'ndate'. Calling script on Zeus specifies
-#  an alternative path to 'ndate'.  
-export NDATE=${NDATE:-/nwprod/util/exec/ndate}
-
 # 'vday' was exported from parent script.  We need to export 'vdate' for fss.f
 # to be used in the VSDB.
 export vdate=${vday}12
@@ -162,9 +158,9 @@ do
   if [ $? -eq 0 ]; then
     if [ $vgrid -eq 240 ]; then
       gridhrap="255 5 1121 881 23117 -119023 8 -105000 4763 4763 0 64"
-      $copygb -g "$gridhrap" -i3 -x $accfile $modfile
+      $COPYGB -g "$gridhrap" -i3 -x $accfile $modfile
     else
-      $copygb -g ${vgrid} -i3 -x $accfile $modfile
+      $COPYGB -g ${vgrid} -i3 -x $accfile $modfile
     fi
 
 #   Not doing subregions now, just ConUS (CNS)

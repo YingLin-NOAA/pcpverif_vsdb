@@ -76,7 +76,7 @@ if [ "$RUN_ENVIR" = dev ]; then        ### for dev
   export DATAROOT=/gpfs/dell2/stmp/$LOGNAME/tmpnwprd
 # export vday=20160204
 else                                   ### for prod/para/test
-  export HOMEverf_precip=/nw${envir}/verf_precip.v.4.3.2
+  export HOMEverf_precip=/gpfs/dell1/nco/ops/nw${envir}/verf_precip.${version}
 fi # end of 'is this dev?' 
 
 $HOMEverf_precip/jobs/JVERF_PRECIP_GETPPT

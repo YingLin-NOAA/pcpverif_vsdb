@@ -116,7 +116,7 @@ export FIXverf_precip=${FIXverf_precip:-$HOMEverf_precip/fix}
 ###################################
 
 # for wwgrib: find the path of wgrib2: 
-export EXECutil=`echo $WGRIB2 | sed 's/\/wgrib2//'`
+export WGRIBpath=`echo $WGRIB2 | sed 's/\/wgrib2//'`
 
 # -----------------  Note for Dev --------------------------------------------
 # set 'bsubnext' to 'N' unless specified in the dev ECF script.  This is one of
@@ -145,16 +145,15 @@ export vday=${vday:-$PDYm1}
 #################################################
 # Set up the INPUT and OUTPUT directories
 #################################################
-export COMIN1=${COMIN1:-/com/verf/${envir}/precip}
-export COMIN2=${COMIN2:-/com/verf/${envir}/precip}
-export COMIN=${COMIN:-/com/verf/${envir}/precip}
-export DCOM=${DCOM:-/dcom/us007003}
+export COMIN1=${COMIN1:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
+export COMIN2=${COMIN2:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
+export COMIN=${COMIN:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
 export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
 # COMCCPA is a prefix, not directory name.  Directory is
 #   /gpfs/dell1/nco/ops/com/ccpa/prod/ccpa.yyyymmdd
 export COMCCPA=${COMCCPA:-/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa}
-export COMOUT=${COMOUT:-/com/verf/${envir}/precip}
-export COMVSDB=${COMVSDB:-/com/verf/${envir}/vsdb/precip}
+export COMOUT=${COMOUT:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
+export COMVSDB=${COMVSDB:-/gpfs/dell2/nco/ops/com/verf/${envir}/vsdb/precip}
 
 if [ ! -d $COMVSDB ]; then
   mkdir -p -m 775 $COMVSDB
@@ -170,6 +169,8 @@ if [ $domain = conus ]; then
 fi
 
 env
+
+echo Actual output starts here
 
 ################################################
 # Run the config file to set up model variables
@@ -210,10 +211,10 @@ cd $DATAROOT
 if [ "$RUN_ENVIR" = dev ]; then  ### for dev only
   if [ $bsubnext = Y -a $cronmode = Y -a $machine = wcoss ]; then
     if [ $domain = conus ]; then
-      $HOMEverf_precip/ecf/jverf_precip_plot.ecf > /ptmpp1/Ying.Lin/cron.out/verfplot.conus.v${vday}.out 2>&1
-      bsub < $HOMEverf_precip/ecf/jverf_precip_fss_24h.ecf > /ptmpp1/Ying.Lin/cron.out/cron.fss24.out 2>&1
+      $HOMEverf_precip/ecf/jverf_precip_plot.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/verfplot.conus.v${vday}.out 2>&1
+      bsub < $HOMEverf_precip/ecf/jverf_precip_fss_24h.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/cron.fss24.out 2>&1
     else
-      bsub < $HOMEverf_precip/ecf/jverf_precip_plot.oconus.ecf > /ptmpp1/Ying.Lin/cron.out/cron.verfplot.oconus.out 2>&1
+      bsub < $HOMEverf_precip/ecf/jverf_precip_plot.oconus.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/cron.verfplot.oconus.out 2>&1
     fi
   fi
 fi

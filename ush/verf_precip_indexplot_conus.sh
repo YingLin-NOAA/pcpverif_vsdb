@@ -22,24 +22,6 @@ typeset -R2 -Z mm dd
 set -A mon Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
 mname=${mon[mm-1]}
 
-# Get the ST2/ST4 Analaysis plots for comparison with verifying analysis.
-# If the verifying analysis IS the ST4, omit st4.${vday}12.24h.gif (it already
-# appears on the right-hand-side in the name ov vanl.${vday}12.gif).
-cp $COMINpcpanl/pcpanl.$vday/st2ml.${vday}12.24h.gif .
-cp $COMINpcpanl/pcpanl.$vday/st4.${vdate}.24h.gif .
-
-if [ $RUN_ENVIR = dev ]; then 
-  cp /com2/pcpanl/para/pcpanl.$vday/st2ml.${vday}12.24h.gif st2mlx.gif
-  err=$?
-  if [ $err -ne 0 ]; then
-    scp Ying.Lin@${PRODWCOSS}:/com2/pcpanl/para/pcpanl.$vday/st2ml.${vday}12.24h.gif st2mlx.gif
-  fi
-  # load imagemagick module in .profile.  Use 'convert' below instead of
-  # /usr/bin/convert (w/o the module LSF job cannot find /usr/bin/convert)
-  convert st2mlx.gif -pointsize 25 -annotate +60+350 'ST2x' st2mlx.${vday}12.24h.gif 
-fi
-
-
 # Now create the index file:
 cat > index.html <<EOF
 <HTML>

@@ -14,9 +14,10 @@ cd $DATA
 msg="Begin job for $job"
 postmsg "$jlogfile" "$msg"
 
-NAGRIB_TABLE=$NWPROD/gempak/fix/nagrib.tbl
-cp $NWPROD/gempak/fix/coltbl.xwp.wbg coltbl.xwp
-cp $NWPROD/gempak/fix/wmogrib.tbl .
+# To make plots with a white background:
+cp $HOMEverf_precip/gempak/tables/colors/coltbl.xwp.wbg coltbl.xwp
+# To distinguish between "no data" and "zero precip" areas: 
+cp $HOMEverf_precip/gempak/tables/grid/wmogrib1.tbl wmogrib.tbl
 
 export vdate=${vday}12   # $vday exported from J-job.
 
@@ -200,17 +201,17 @@ if [ $RUN_ENVIR = dev -a $machine = wcoss ]; then
       if [ $region = AK ]; then
         GBFILE=akqpe.$vdate.198
         GFFILE=akqpe.$vdate.gif
-        $copygb -g 198 -i3 -x QPE.151.$vdate.24h $GBFILE
+        $COPYGB -g 198 -i3 -x QPE.151.$vdate.24h $GBFILE
         ANLNAME=AKQPE
       elif [ $region = HI ]; then
         GBFILE=cmorph.$vdate.196
         GFFILE=cmorph.$vdate.hi.gif
-        $copygb -g 196 -i3 -x cmorph.$vdate.grb $GBFILE
+        $COPYGB -g 196 -i3 -x cmorph.$vdate.grb $GBFILE
         ANLNAME=CMORPH
       elif [ $region = PR ]; then
         GBFILE=cmorph.$vdate.194
         GFFILE=cmorph.$vdate.pr.gif
-        $copygb -g 194 -i3 -x cmorph.$vdate.grb $GBFILE
+        $COPYGB -g 194 -i3 -x cmorph.$vdate.grb $GBFILE
         ANLNAME=CMORPH
       fi
       $USHverf_precip/nam_pcpn_plotpcp.sh \

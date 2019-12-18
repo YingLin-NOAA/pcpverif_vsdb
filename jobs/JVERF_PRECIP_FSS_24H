@@ -43,7 +43,6 @@ then
   # parm.dev.$machine, under $HOMEverf_precip.  
   . $PARMverf_precip/verf_precip_config
   export DATAROOT=${DATAROOT:-/tmpnwprd2}
-  export jlogfile=${jlogfile:-$DATAROOT/jlogfile}
   export SENDDBN=NO
   if [ $debug = N ]; then
     RM_DATA=YES
@@ -59,7 +58,6 @@ fi
 if [ $RUN_ENVIR = "prod" -a $envir != "prod" ]   ### For Operations
 then
    export SENDDBN=${SENDDBN:-YES}
-   export jlogfile=${jlogfile:-/com/logs/${envir}/jlogfile}
 #  export DBNROOT=/nwprod/spa_util/para_dbn
    export DBNROOT=/nwprod/spa_util/fakedbn
    export DBNLOG=${DBNLOG:-YES}
@@ -75,11 +73,6 @@ export DATAROOT=${DATAROOT:-/tmpnwprd1}
 export DATA=$DATAROOT/${job}.${pid}
 mkdir -p $DATA
 cd $DATA 
-
-####################################
-# File To Log Msgs
-####################################
-export jlogfile=${jlogfile:-/com/logs/jlogfiles/jlogfile.${job}.${pid}}
 
 ####################################
 # Determine Job Output Name on System
@@ -109,7 +102,7 @@ export SENDRZDM=${SENDRZDM:-NO}      # for daily side-by-side plots
 # Specify Execution Areas
 # Non-dev uses the follwing block instead of parm/verf_precip_config
 ################################################################
-export HOMEverf_precip=${HOMEverf_precip:-/nw${envir}/verf_precip.${verf_precip_ver}}
+export HOMEverf_precip=${HOMEverf_precip:-/gpfs/dell1/nco/ops/nw${envir}/verf_precip.${verf_precip_ver}}
 export EXECverf_precip=${EXECverf_precip:-$HOMEverf_precip/exec}
 export PARMverf_precip=${PARMverf_precip:-$HOMEverf_precip/parm}
 export USHverf_precip=${USHverf_precip:-$HOMEverf_precip/ush}
@@ -124,19 +117,17 @@ export FIXverf_precip=${FIXverf_precip:-$HOMEverf_precip/fix}
 # /nwprod/util/exec, but Zeus does not have a working /nwprod/util/exec/wgrib.
 # WGRIBpath is defined in the Zeus sms script. 
 # -------------------------------------------------------------------
-# for wwgrib: find the path of wgrib2: 
-export EXECutil=`echo $WGRIB2 | sed 's/\/wgrib2//'`
 
 # If the calling script specifies a $vday value, then PDY=$vday+1.
 if [ "$vday" != "" ]; then
-  PDY=`$finddate $vday d+1`
+  PDY=`date -d "$vday + 1 day" +%Y%m%d`
 fi
 
 # /com/date is maintained by NCO on the CCS and WCOSS, but it does not exist 
 #   on Zeus.  Do not use setpdy on Zeus.  
 if [ $machine = theia ]; then 
   today=`date -u +%Y%m%d`  
-  PDYm1=`$finddate $today d-1`
+  PDYm1=`date +%Y%m%d -d "1 day ago"`
 else
   # Run setpdy and initialize PDY variables
   setpdy.sh
@@ -148,13 +139,12 @@ export vday=${vday:-$PDYm1}
 #################################################
 # Set up the INPUT and OUTPUT directories
 #################################################
-export COMIN=${COMIN:-/com/verf/${envir}/precip}
-export DCOM=${DCOM:-/dcom/us007003}
+export COMIN=${COMIN:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
 export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
 export COMCCPA=${COMCCPA:-/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa}
 
-export COMOUT=${COMOUT:-/com/verf/${envir}/precip}
-export COMVSDB=${COMVSDB:-/com/verf/${envir}/vsdb/precip}
+export COMOUT=${COMOUT:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
+export COMVSDB=${COMVSDB:-/gpfs/dell2/nco/ops/com/verf/${envir}/vsdb/precip}
 
 if [ ! -d $COMVSDB ]; then
   mkdir -p -m 775 $COMVSDB
@@ -164,6 +154,8 @@ if [ ! -d $COMOUT ]; then
 fi
 
 env
+
+echo Actual output starts here
 
 ################################################
 # Run the config file to set up model variables
@@ -188,8 +180,9 @@ postmsg "$jlogfile" "$msg"
 
 if [ "$RUN_ENVIR" = dev ]; then  ### for dev only
   if [ $bsubnext = Y -a $cronmode = Y -a $machine = wcoss ]; then
-    bsub < $HOMEverf_precip/util.dev/trans_tar_dev_vsdb_for_tempest.ksh > /ptmpp1/Ying.Lin/cron.out/bsub.devtarfortempest 2>&1
-    bsub < $HOMEverf_precip/util.dev/trans_save_verf.dat.ksh > /ptmpp1/Ying.Lin/cron.out/bsub.save_verf_dat 2>&1
+    echo 'skip the following two until para on phase1 is discontinued.
+#    bsub < $HOMEverf_precip/util.dev/trans_tar_dev_vsdb_for_tempest.ksh > /ptmpp1/Ying.Lin/cron.out/bsub.devtarfortempest 2>&1
+#    bsub < $HOMEverf_precip/util.dev/trans_save_verf.dat.ksh > /ptmpp1/Ying.Lin/cron.out/bsub.save_verf_dat 2>&1
   fi
 fi
 

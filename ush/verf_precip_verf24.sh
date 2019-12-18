@@ -362,7 +362,7 @@ EOF
 
       # Find out if $modfile is already on $grid.  If not, use copygb 
       # to map it to $grid:
-      mgrid=`$NWPROD/ush/wwgrib.pl $modfile | gawk '{print $2}'`
+      mgrid=`$USHverf_precip/verf_precip_wwgrib.pl $modfile | gawk '{print $2}'`
       if [ $mgrid -eq $grid ]; then
         cp $modfile $modfile.$grid
       else

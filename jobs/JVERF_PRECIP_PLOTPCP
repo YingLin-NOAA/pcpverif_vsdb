@@ -9,11 +9,11 @@ set -x
 #################################################################
 
 # To quickly find important output:
-echo 'Actual output starts here:'
 
 # ###################################
 # SET SHELL PROCESSING VARIABLES
 # ###################################
+echo Actual output starts here
 export PS4='$SECONDS + ' 
 date
 
@@ -91,11 +91,6 @@ mkdir -p $DATA
 cd $DATA 
 
 ####################################
-# File To Log Msgs
-####################################
-export jlogfile=${jlogfile:-/com/logs/jlogfiles/jlogfile.${job}.${pid}}
-
-####################################
 # Determine Job Output Name on System
 ####################################
 export outid="LL$job"
@@ -123,7 +118,7 @@ export SENDRZDM=${SENDRZDM:-NO}      # for daily side-by-side plots
 # Specify Execution Areas
 # Non-dev uses the follwing block instead of parm/verf_precip_config
 ################################################################
-export HOMEverf_precip=${HOMEverf_precip:-/nw${envir}/verf_precip.${verf_precip_ver}}
+export HOMEverf_precip=${HOMEverf_precip:-/gpfs/dell1/nco/ops/nw${envir}/verf_precip.${verf_precip_ver}}
 export EXECverf_precip=${EXECverf_precip:-$HOMEverf_precip/exec}
 export PARMverf_precip=${PARMverf_precip:-$HOMEverf_precip/parm}
 export USHverf_precip=${USHverf_precip:-$HOMEverf_precip/ush}
@@ -132,17 +127,8 @@ export FIXverf_precip=${FIXverf_precip:-$HOMEverf_precip/fix}
 # -----------------------------------------------------------------
 # Note for dev:
 #
-# Set up GEMPAK/NTRANS environment
-# 2013/10/31 Jacob C.: (at least on theia), no need to call .gempak, as long
-#   as the gempak module is loaded on .profile.  
-# 2013/11/5 On WCOSS, not invoking '. /nwprod/gempak/.gempak' does not work
-#   when bsub'ing is done in a cron job (might need to do a '. ~/.profile'.). 
-#   We'll just go back with '. /nwprod/gempak/.gempak' for now.
-#
-# -----------------------------------------------------------------
-if [ $machine = wcoss ]; then
-  . /nwprod/gempak/.gempak
-fi 
+# For a white background:
+## cp $GEMFIX/coltbl.xwp.wbg coltbl.xwp
 
 ###################################
 # Set up the UTILITIES
@@ -172,16 +158,17 @@ export vday=${vday:-$PDYm1}
 #################################################
 # Set up the INPUT and OUTPUT directories
 #################################################
-export COMIN=${COMIN:-/com/verf/${envir}/precip}
-export DCOM=${DCOM:-/dcom/us007003}
+export COMIN=${COMIN:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
 export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
-export COMOUT=${COMOUT:-/com/verf/${envir}/precip}
+export COMOUT=${COMOUT:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
 
 if [ ! -d $COMOUT ]; then
   mkdir -p -m 775 $COMOUT
 fi
 
 env
+
+echo 'Actual output starts here:'
 
 #######################################################################
 $HOMEverf_precip/scripts/exverf_precip_plotpcp.sh.ecf 

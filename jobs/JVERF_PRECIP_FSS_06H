@@ -122,8 +122,6 @@ export FIXverf_precip=${FIXverf_precip:-$HOMEverf_precip/fix}
 ###################################
 # Set up the UTILITIES
 ###################################
-# for wwgrib: find the path of wgrib2: 
-export EXECutil=`echo $WGRIB2 | sed 's/\/wgrib2//'`
 
 # If the calling script specifies a $vday value, then PDY=$vday+9.
 if [ "$vday" != "" ]; then

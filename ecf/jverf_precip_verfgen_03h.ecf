@@ -1,8 +1,7 @@
 #!/bin/bash
 #BSUB -J jverf_precip_verfgen03
-#BSUB -o /gpfs/dell2/ptmp/Ying.Lin/cron.out/verfgen24.%J
-#BSUB -e /gpfs/dell2/ptmp/Ying.Lin/cron.out/verfgen24.%J
-#BSUB -L /bin/sh
+#BSUB -o /gpfs/dell2/ptmp/Ying.Lin/cron.out/verfgen03.%J
+#BSUB -e /gpfs/dell2/ptmp/Ying.Lin/cron.out/verfgen03.%J
 #BSUB -n 1
 #BSUB -q "dev"
 #BSUB -W 2:00
@@ -13,6 +12,12 @@
 # 'BSUB -L login_shell ensures that variables exported by GETPPT (e.g. vday)
 # will not be propagated to the environment of verfgen_03h.  
 set -x
+module purge
+module load ips/18.0.5.274    # for prod_util
+module load prod_util/1.1.3
+module load prod_envir/1.0.3
+module load grib_util/1.1.1
+
 export envir=dev
 export cyc=00
 export vhour=03h
@@ -20,6 +25,8 @@ export job=verf_precip_verfgen_03h
 export RUN_ENVIR=dev
 export retro=N
 export debug=N
+
+export version=v4.3.2
 
 # This script has three optional arguments if run interactively.  WCOSS LSF 
 # (bsub) does not accept arguments in the LSF script, in that case, set up
@@ -51,25 +58,21 @@ if [ $# -ge 3 ]; then
 fi
 
 if [ "$RUN_ENVIR" = dev ]; then        ### for dev 
-  # run .profile so that 
-  #   1. the script can find the 'postmsg','startmsg' etc. in the current dir
-  #   2. module ics is loaded to allow us to run copygb in cron jobs
-  . /u/$LOGNAME/.profile
 # ------------------------------------------------------
 # Most frequently made changes: 
-  export HOMEverf_precip=$ZROOT/pcpverif/nextjif
-  export PARMverf_precip=$HOMEverf_precip/parm.dev.wcoss
-  export DATAverf_precip=/ptmpp1/$LOGNAME/verf.dat
+  export COMCCPA=`compath.py ccpa/prod`/ccpa
+  export NOSCRUB=/gpfs/dell2/emc/verification/noscrub/Ying.Lin
+  export HOMEverf_precip=$NOSCRUB/verf_precip.${version}
+  export PARMverf_precip=$HOMEverf_precip/parm
+  export DATAverf_precip=/gpfs/dell2/ptmp/$LOGNAME/verf.dat.${version}
   export COMVSDB=$DATAverf_precip/vsdb
-  export COMCCPA=/com2/ccpa/prod/ccpa   # after CCPA upgrade
 # ------------------------------------------------------
   # DATAROOT is NCO-speak for 'wrkdir'.
-  export DATAROOT=/stmpp1/$LOGNAME/tmpnwprd
-  export COMROOT=/com               # needed for setpdy,e g. /com/date/t20z
+  export DATAROOT=/gpfs/dell2/stmp/$LOGNAME/tmpnwprd
 # export vday=20160207 
-  export ARCH45DAY=/meso/save/Ying.Lin/hold45days
+  export ARCH45DAY=$NOSCRUB/hold45days
 else                                   ### for prod/para/test
-  export HOMEverf_precip=/nw${envir}/verif_precip.v.4.0.0
+  export HOMEverf_precip=/gpfs/dell1/nco/ops/nw${envir}/verf_precip.${version}
 fi # end of 'is this dev?' 
 
 $HOMEverf_precip/jobs/JVERF_PRECIP_VERFGEN_03H

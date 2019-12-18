@@ -105,15 +105,9 @@ export USHverf_g2g=${USHverf_g2g:-$HOMEverf_href/ush}
 ###################################
 # Set up the UTILITIES
 ###################################
-export utilscript=/nwprod/util/ush
-export utilexec=/nwprod/util/exec
-export EXECutil=/nwprod/util/exec
-
-# Run setup to initialize working directory and utility scripts
-sh $utilscript/setup.sh
 
 # Run setpdy and initialize PDY variables
-sh $utilscript/setpdy.sh
+setpdy.sh
 . $DATA/PDY
 
 export vday=${vday:-$PDYm2}
@@ -128,30 +122,31 @@ export vday=${vday:-$PDYm2}
   export COMHIRESW=${COMHIRESW:-/gpfs/hps/nco/ops/com/hiresw/prod/hiresw}
   export COMHREF=${COMHREF:-/gpfs/hps/nco/ops/com/hiresw/prod/href}
   export COMNAM=${COMNAM:-/gpfs/dell1/nco/ops/com/nam/prod/nam}
-  export COMMOSAIC=${COMMOSAIC:-/com/hourly/prod/radar}
+#  export COMMOSAIC=${COMMOSAIC:-/com/hourly/prod/radar}
+  export COMMOSAIC=${COMMOSAIC:-/gpfs/dell1/nco/ops/com/hourly/prod/radar}
   export COMURMA=${COMURMA:-/gpfs/dell2/nco/ops/com/urma/prod/urma2p5}
-  export COMBUFR=${COMBUFR:-/com2/hourly/prod}
-  export COMGFS=${COMGFS:-/com2/gfs/prod/gfs}
+  export COMBUFR=${COMBUFR:-/gpfs/dell1/nco/ops/com/hourly/prod}
+  export COMGFS=${COMGFS:-/gpfs/dell1/nco/ops/gfs/prod/gfs}
   export COMHRRR=${COMHRRR:-/gpfs/hps/nco/ops/com/hrrr/prod/hrrr}
-  export COMGFSANL=${COMGFSANL:-/com2/gfs/prod/gfs}
+  export COMGFSANL=${COMGFSANL:-/gpfs/dell1/nco/ops/gfs/prod/gfs}
   export COMGEFS=${COMGEFS:-/gpfs/dell2/nco/ops/com/gens/prod/gefs}
   export COMNDAS=${COMNDAS:-/gpfs/dell1/nco/ops/com/nam/prod/ndas}
   export COMNAEFS=${COMNAEFS:-/gpfs/hps/nco/ops/com/naefs/prod/cmce}
-  export AFWADIR=${AFWADIR:-/dcom/us007003}
-  export CLAVRDIR=${CLAVRDIR:-/dcom/us007003}
+  export AFWADIR=${AFWADIR:-/gpfs/dell1/nco/ops/dcom}
+  export CLAVRDIR=${CLAVRDIR:-/gpfs/dell1/nco/ops/dcom}
 
 ##################################
 # Define COMIN/COMOUT variables
 ##################################
-export COM_IN=${COM_IN:-/com/verf/${envir}}
-export COM_OUT=${COM_OUT:-/com/verf/${envir}}
+export COM_IN=${COM_IN:-/gpfs/dell2/nco/ops/com/verf/${envir}}
+export COM_OUT=${COM_OUT:-/gpfs/dell2/nco/ops/com/verf/${envir}}
 
 export FCSTDIR=${FCSTDIR:-$COM_OUT/${RUN}}
 export OBSVDIR=${OBSVDIR:-$COM_OUT/${RUN}}
 
 export COMIN=$COM_IN/${RUN}.$vday
 export COMOUT=$COM_OUT/${RUN}.$vday
-export COMVSDB=${COMVSDB:-/com/verf/${envir}/vsdb/precip}
+export COMVSDB=${COMVSDB:-/gpfs/dell2/nco/ops/com/verf/${envir}/vsdb/precip}
 
 # $COMVSDB/${model} made in ush/verf_g2g_run_href.sh
 mkdir -p -m 775 $COMOUT $COMVSDB

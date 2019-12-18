@@ -20,10 +20,6 @@ cycs=$2
 bucket=$3
 frange=$4
 
-# Zeus does not have a functioning 'ndate'. Calling script on Zeus specifies
-#  an alternative path to 'ndate'.  
-export NDATE=${NDATE:-/nwprod/util/exec/ndate}
-
 # export upper-case model name to fss.f (the model name in the vsdb
 # file will be in upper case):
 
@@ -74,7 +70,7 @@ do
   # cycle might or might not be among those specified in $cycles.
 
   # hypothetical model starting date/cycle
-  mdate=`/nwprod/util/exec/ndate -$fhour $vdate`
+  mdate=`$NDATE -$fhour $vdate`
   mday=`echo $mdate | cut -c 1-8`
   mcyc=`echo $mdate | cut -c 9-10`
   
@@ -186,7 +182,7 @@ EOF
                             # add/subtract above
     if [ $vgrid -eq 240 ]; then
       gridhrap="255 5 1121 881 23117 -119023 8 -105000 4763 4763 0 64"
-      $copygb -g "$gridhrap" -i3 -x $fcstacc $fcstacc.g240
+      $COPYGB -g "$gridhrap" -i3 -x $fcstacc $fcstacc.g240
     else
       echo Verification grid is not G240.  STOP. 
     fi

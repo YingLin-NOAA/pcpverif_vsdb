@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #BSUB -J jverf_precip_verfgen24
 #BSUB -o /gpfs/dell2/ptmp/Ying.Lin/cron.out/verfgen24.%J
 #BSUB -e /gpfs/dell2/ptmp/Ying.Lin/cron.out/verfgen24.%J
@@ -69,13 +69,12 @@ if [ $# -ge 3 ]; then
 fi
 
 if [ "$RUN_ENVIR" = dev ]; then        ### for dev 
-  export COMCCPA=`compath.py ccpa/prod`
+  export COMCCPA=`compath.py ccpa/prod`/ccpa
 # ------------------------------------------------------
 # Most frequently made changes: 
   export NOSCRUB=/gpfs/dell2/emc/verification/noscrub/Ying.Lin
   export HOMEverf_precip=$NOSCRUB/verf_precip.${version}
   export PARMverf_precip=$HOMEverf_precip/parm
-  export COMROOT=/com               # needed for setpdy,e g. /com/date/t20z
   export DATAverf_precip=/gpfs/dell2/ptmp/$LOGNAME/verf.dat.${version}
   export COMVSDB=$DATAverf_precip/vsdb
   export bsubnext=Y   # bsub PLOT and FSS, if other conditions are met? 
@@ -93,7 +92,7 @@ if [ "$RUN_ENVIR" = dev ]; then        ### for dev
   # VERFANL defaults to 'CCPA', unless specified otherwise in this script.
   export VERFANL=CCPA
 else                                   ### for prod/para/test
-  export HOMEverf_precip=/nw${envir}/verf_precip.${version}
+  export HOMEverf_precip=/gpfs/dell1/nco/ops/nw${envir}/verf_precip.${version}
 fi # end of 'is this dev?' 
 
 $HOMEverf_precip/jobs/JVERF_PRECIP_VERFGEN_24H

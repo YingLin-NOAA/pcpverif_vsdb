@@ -13,9 +13,6 @@ ref=$4
 MM=`echo ${VDAY} | cut -c 5-6`
 DD=`echo ${VDAY} | cut -c 7-8`
 
-OBSVDIR=${OBSVDIR:-/com/verf/prod/href}
-FCSTDIR=${FCSTDIR:-/com/verf/prod/href}
-
 # following parameters are exported to prepg2g.sh ###############
 # (1) for observation and forecaste file's names/directories (forecsat's are put
 #     in following if block

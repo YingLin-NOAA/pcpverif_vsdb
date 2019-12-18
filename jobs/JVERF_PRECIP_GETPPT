@@ -121,8 +121,7 @@ export FIXverf_precip=${FIXverf_precip:-$HOMEverf_precip/fix}
 # Set up the UTILITIES
 ###################################
 # WGRIBpath is needed in ush/verf_precip_ywgrib.pl:
-export WGRIBpath=/gpfs/dell1/nco/ops/nwprod/grib_util.v1.1.1/exec
-
+export WGRIBpath=`echo $WGRIB | sed 's/\/wgrib//'`
 # -----------------  Note for Dev -----------------------------------
 
 # set 'bsubnext' to 'N' unless specified in the ECF script.  This is one of
@@ -181,8 +180,8 @@ cd $DATAROOT
 if [ "$RUN_ENVIR" = dev ]; then  ### for dev only
   userid=`whoami`
   if [ $bsubnext = Y -a $cronmode = Y -a $machine = wcoss -a "$userid" = Ying.Lin ]; then
-    bsub < $HOMEverf_precip/ecf/jverf_precip_verfgen_03h.ecf > /ptmpp1/Ying.Lin/cron.out/cron.verfgen03.out 2>&1
-    bsub < $HOMEverf_precip/ecf/jverf_precip_verfgen_24h.ecf > /ptmpp1/Ying.Lin/cron.out/cron.verfgen24.out 2>&1
+    bsub < $HOMEverf_precip/ecf/jverf_precip_verfgen_03h.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/cron.verfgen03.out 2>&1
+    bsub < $HOMEverf_precip/ecf/jverf_precip_verfgen_24h.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/cron.verfgen24.out 2>&1
   fi
 fi
 

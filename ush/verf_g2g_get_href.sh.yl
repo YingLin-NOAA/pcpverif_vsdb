@@ -45,10 +45,20 @@ if [ $modnam = href ] ; then
         if [ -s $href ]; then 
 # YL: 
 #         find field that matches ":APCP:surface" in $href, output it to 
-#         apcp, then copygb2 to HRAP grid.
+#         apcp.$href, then copygb2 to HRAP grid.
+#         YL changing the file name 'apcp' being recycled, since it appears 
+#         that sometimes the individual wgrib2/copygb2 processing for  these
+#         loops are running into each other.
+#
+#  First, strip off the directory paths from the $href, e.g.
+#    href=/gpfs/hps/nco/ops/com/hiresw/prod/href.20191114/verf_g2g/href.m01.t00z.conus.f06
+#    hrefname=href.m01.t00z.conus.f06
+#    apcp.$hrefname=apcp.href.m01.t00z.conus.f06  
 
-          $WGRIB2 -match ":APCP:surface" $href |$WGRIB2 -i $href -grib $DATA/apcp
-          $COPYGB2 -g"20 6 0 0 0 0 0 0 1121 881 23117000 240977000 8 60000000 255000000 4763000 4763000 0 64" -i2,1 -x $DATA/apcp $DATA/href.ens${mbr}.t${cycle}z.apcp.f${fhr}
+          hrefname=`echo $href | awk -F"/"  '{print $NF}'`
+
+          $WGRIB2 -match ":APCP:surface" $href |$WGRIB2 -i $href -grib $DATA/apcp.$hrefname
+          $COPYGB2 -g"20 6 0 0 0 0 0 0 1121 881 23117000 240977000 8 60000000 255000000 4763000 4763000 0 64" -i2,1 -x $DATA/apcp.$hrefname $DATA/href.ens${mbr}.t${cycle}z.apcp.f${fhr}
 
           #HREFv2 grid resolution has been changed
         

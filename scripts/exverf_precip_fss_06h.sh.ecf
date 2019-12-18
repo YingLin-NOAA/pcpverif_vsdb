@@ -71,15 +71,15 @@ do
   echo $HOMEverf_precip/scripts/exverf_precip_fss_06h_poe.sh.ecf $vhr >> $DATA/poescript
 done
 
-chmod 775 $DATA/poescript
-export MP_PGMMODEL=mpmd
-export MP_CMDFILE=$DATA/poescript
-export MP_LABELIO=YES
+echo 
+echo Here is the poescript for fss06:
+cat $DATA/poescript
+echo 
 
 #############################################################
 # Execute the script.
 #############################################################
-mpirun.lsf
+mpirun -l cfp poescript
 if [ "$envir" != dev ]; then
   export err=$?; err_chk
 fi
