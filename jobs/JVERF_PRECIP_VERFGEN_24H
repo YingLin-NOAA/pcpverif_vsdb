@@ -208,17 +208,6 @@ postmsg "$jlogfile" "$msg"
 # 
 cd $DATAROOT
 
-if [ "$RUN_ENVIR" = dev ]; then  ### for dev only
-  if [ $bsubnext = Y -a $cronmode = Y -a $machine = wcoss ]; then
-    if [ $domain = conus ]; then
-      $HOMEverf_precip/ecf/jverf_precip_plot.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/verfplot.conus.v${vday}.out 2>&1
-      bsub < $HOMEverf_precip/ecf/jverf_precip_fss_24h.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/cron.fss24.out 2>&1
-    else
-      bsub < $HOMEverf_precip/ecf/jverf_precip_plot.oconus.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/cron.verfplot.oconus.out 2>&1
-    fi
-  fi
-fi
-
 if [ $RM_DATA = YES ]; then
   rm -rf $DATA
 fi

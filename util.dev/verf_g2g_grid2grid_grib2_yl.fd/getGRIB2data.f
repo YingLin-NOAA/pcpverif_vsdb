@@ -53,7 +53,7 @@ c
 c Find correct day for 00Z CCPA: retard by 3h:
       rinc=0.
       rinc(2)=-3.
-      idat=0
+      idat=0      
       idat1=0
 
       call baopenr(grbunit, grib2file, ierr)
@@ -164,15 +164,11 @@ c
               idat(2)=mm(nfcst)
               idat(3)=dd(nfcst)
               idat(5)=hh(nfcst)
-         write(*,*) 'Before w3movdat:',yy(nfcst),mm(nfcst),
-     +              dd(nfcst),hh(nfcst)
               call w3movdat(rinc,idat,idat1)
               yy(nfcst)=idat1(1)-2000
               mm(nfcst)=idat1(2)
               dd(nfcst)=idat1(3)
               hh(nfcst)=idat1(5)
-         write(*,*) 'After w3movdat:',yy(nfcst),mm(nfcst),
-     +              dd(nfcst),hh(nfcst)  
             else
               hh(nfcst)=hh(nfcst)-3 
             endif
@@ -213,7 +209,6 @@ c
           levels(nvar) = 1
         end if
 
-        write(*,*) 'Check: yy(nfcst)=',yy(nfcst)
         yyyy=yy(nfcst)+2000
  
         if(jpd1.eq.2.and.jpd2.eq.1) then         !Wind 

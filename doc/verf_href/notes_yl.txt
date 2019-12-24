@@ -244,3 +244,12 @@ verf_g2g_grid2grid_grib2.fd < g2g.ctl.ensemble > output.ensemble
 grid2grid
   |_
 
+
+-------------------------------------------------------------------------
+Debug: to run only the 00Z cycle, go to ush/verf_g2g_href.sh, and change
+  END=18
+to
+  END=00
+
+
+

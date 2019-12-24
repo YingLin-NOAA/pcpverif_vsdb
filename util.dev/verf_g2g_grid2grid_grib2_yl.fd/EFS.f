@@ -283,7 +283,7 @@ c         jhh=hhobsv(ifh)
           write(*,*) trim(meangribfile),' ',trim(sprdgribfile)
 
           clip = 0. 
-          call get_HiresClimData(ifh,meangribfile,sprdgribfile,
+          call get_HiresClimData(meangribfile,sprdgribfile,
      +      kk4,kk5,kk6,kk7,ngrid,Nmodel,kb,clip,noclim)
 
           if(noclim.eq.1) then
@@ -360,7 +360,9 @@ c         jhh=hhobsv(ifh)
            nxy=0
            swgt = 0.
            rclim = 0.
-
+cyl
+          write(*,*) 'EFS check 1, ngrid,kk4,kk5=',ngrid,kk4,kk5
+cyl
           do i = 1,ngrid 
            if(kk4.eq.16.and.kk5.eq.196) then
             if(obsvdata(ifh,ivr,ilv,i).gt.-990.) then
@@ -399,6 +401,11 @@ c         jhh=hhobsv(ifh)
              rclim(nxy,:) = clip(i,:)
              area_factor(nxy)=cos(datan(1.0d0)*region_latlon(1,i)/45.0)
              swgt=swgt +  area_factor(nxy)
+cyl
+             write(*,*) '  nxy,area_factor,region_latlon, cos', 
+     &          nxy, area_factor(nxy), region_latlon(1,i),
+     &          cos(datan(1.0d0)*region_latlon(1,i)/45.0)
+cyl
              do iens=1,Nmodel
                rfcst(nxy,iens)=fcstmdl(iens,ifh,ivr,ilv,i)
              end do
@@ -428,8 +435,6 @@ c         jhh=hhobsv(ifh)
            end do
 
            scrf = cprob/tprob
-
-          write(*,*) "cprob,tprob,scrf=",cprob,tprob,scrf
 
           end if
 

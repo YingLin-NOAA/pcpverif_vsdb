@@ -81,11 +81,6 @@ typeset -R3 -Z fhr3
 export ICOM=$DCOMROOT/prod/$day/qpf_verif
 export ICOMm1=$DCOMROOT/prod/$daym1/qpf_verif
 
-# 2019/12/06: ECMWF files not on dell DCOM yet.  It might take another couple
-# of weeks.  Getting them from old wcoss dcom now. 
-export ICOMm1tmp=/gpfs/tp1/nco/ops/dcom/us007003/$daym1/qpf_verif
-
-
 # Create 'import' directory to store re-named ECMWF files and cnvgrib'd UKMO
 # files:
   IMPORT=$DATA/import
@@ -98,12 +93,9 @@ if [ $run_ecmwf = 1 ]; then
 #   UWD${daym1}1200${mmdd}12001
 #   UWD${daym1}1200${mmddp1}12001
 #   UWD${daym1}1200${mmddp2}12001
-##  cp $ICOMm1/UWD${daym1}1200${mmdd}12001 UWD.${daym1}12.24
-##  cp $ICOMm1/UWD${daym1}1200${mmddp1}12001 UWD.${daym1}12.48
-##  cp $ICOMm1/UWD${daym1}1200${mmddp2}12001 UWD.${daym1}12.72
-  cp $ICOMm1tmp/UWD${daym1}1200${mmdd}12001 UWD.${daym1}12.24
-  cp $ICOMm1tmp/UWD${daym1}1200${mmddp1}12001 UWD.${daym1}12.48
-  cp $ICOMm1tmp/UWD${daym1}1200${mmddp2}12001 UWD.${daym1}12.72
+  cp $ICOMm1/UWD${daym1}1200${mmdd}12001 UWD.${daym1}12.24
+  cp $ICOMm1/UWD${daym1}1200${mmddp1}12001 UWD.${daym1}12.48
+  cp $ICOMm1/UWD${daym1}1200${mmddp2}12001 UWD.${daym1}12.72
 fi
 
 # CMC and DWD precip files need to be converted from GRIB2; DWD needs further 

@@ -1,4 +1,4 @@
-       subroutine get_HiresClimData(meangribfile,sprdgribfile,
+       subroutine get_HiresClimData(ifh,meangribfile,sprdgribfile,
      +    kk4,kk5,kk6,kk7,ngrid,Nmodel,kb,clip,nodata)
 
 
@@ -27,9 +27,9 @@
 
        write(*,*) trim(meangribfile),' ',trim(sprdgribfile)
 
-
+       n51=51+ifh   !Modified for Dell: On phase1, only fixed 51 used  
        write(*,*)' Get clim mean data ------------------------'
-       call baopenr(51,meangribfile, ierr)
+       call baopenr(n51,meangribfile, ierr)
        if(ierr.ne.0) then
         write(*,*)'open ',trim(meangribfile), ' error=',ierr
         nodata=1
@@ -56,7 +56,7 @@
          !end if
  
 
-          call readClimGB2(51,jpdtn,kk4,kk5,kk6,kk7,kk27,gfld,iret)
+          call readClimGB2(n51,jpdtn,kk4,kk5,kk6,kk7,kk27,gfld,iret)
 
           if(iret.ne.0) then
             write(*,*)'read mean clim data file error=',iret  
@@ -66,17 +66,18 @@
             write(*,'(10f8.2)') (mean(k),k=10001,10010)
           end if
                
-        call baclose(51, ierr)
+        call baclose(n51, ierr)
  
        write(*,*)' Get clim spread data ----------------------'                                      
-
-       call baopen(52,sprdgribfile, ierr)
+    
+       n52=71+ifh
+       call baopen(n52,sprdgribfile, ierr)
        if(ierr.ne.0) then
         write(*,*)'open ',trim(sprdgribfile), ' error'
         nodata = 1 
        end if
 
-         call readClimGB2(52,jpdtn,kk4,kk5,kk6,kk7,kk27,gfld,iret)
+         call readClimGB2(n52,jpdtn,kk4,kk5,kk6,kk7,kk27,gfld,iret)
 
 
           if(iret.ne.0) then
@@ -87,7 +88,7 @@
             write(*,'(10f8.2)') (spread(k),k=10001,10010)
           end if
 
-        call baclose(52, ierr)
+        call baclose(n52, ierr)
 
 CCC Now compute climate data at 11 probability bin ----
          write(*,*)'Compute climate data at kb bin --'

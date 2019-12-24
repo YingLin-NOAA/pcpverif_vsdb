@@ -245,17 +245,6 @@ then
   cp $COMOUT/pcpplot_${vdate}*.tar $ARCH45DAY/.
 fi
 
-# Send out the data to the webserver if running in the development mode (currently RZDM)
-if [ $RUN_ENVIR = dev -a $SENDRZDM = YES ]
-then
-  
-  if [ $cronmode = Y ]; then
-    bsub < $HOMEverf_precip/util.dev/trans_send2rzdm.ksh > /ptmpp1/Ying.Lin/cron.out/cron.send2rzdm_${domain} 2>&1
-  else
-    $HOMEverf_precip/util.dev/trans_send2rzdm.ksh > /ptmpp1/Ying.Lin/cron.out/cron.send2rzdm_${domain} 2>&1
-  fi
-fi
-
 #####################################################################
 # GOOD RUN
 set +x

@@ -97,7 +97,15 @@ c ----
 c     print *, 'bspec=',bspec
       fhk  = 0.0
       ftl  = 0.0
-
+cyl
+      sanp=0.0
+      sfcp=0.0
+      rp=0.0
+      wfac=0.0
+c      write(*,*) 'check 1, rp(1,1), rp(1,2)=', rp(1,1), rp(1,2)
+      write(*,*) 'check 1, wght(1)=', wght(1), ' nthrs=', nthrs
+      write(*,*) '  check 1.5, fcst(1,i)=', (fcst(1,i), i=1,im)
+cyl
       do nxy = 1, len  
        do i = 1, im
         fs(i) = fcst(nxy,i)
@@ -121,6 +129,7 @@ c     print *, 'bspec=',bspec
        end if
 
        wfac = wght(nxy)
+       write(*,*) 'Check 2, nxy, wfac=', nxy, wfac
 
 c      print *, '++++++++++++++++++++++++++++++++++++'
 c       print *, '        RELIABILITY DIAGRAM '
@@ -131,7 +140,9 @@ c      print *, '++++++++++++++++++++++++++++++++++++'
        
 
        if(nthrs.ge.3) then                     !threshold range case (FHO~),at least 2 bins t1~t2~t3 (3 thresholds)
+      write(*,*) 'check 3, about to call reli, wfac=', wfac
          call reli(fs,im,fa,pt,nthrs-1,rp,irt,nthrs,op)
+      write(*,*) 'check 4, rp(1,1), rp(1,2)=', rp(1,1), rp(1,2)
        elseif (nthrs.eq.1) then                !0ne threshold (FHO> or FHO< or FHO=)case
           call reli(fs,im,fa,pt,1,rp,irt,nthrs,op)
        elseif (nthrs.le.0) then                !climatology data as ref case
@@ -145,7 +156,13 @@ c      print *, '++++++++++++++++++++++++++++++++++++'
        !write(*,*) 'analy',(rp(k,2),k=1,imp1)
        !write(*,*) 'fcst ',(rp(k,1),k=1,imp1)
 
+       write(*,*) 'check 5, imp1=', imp1, ' wfac=', wfac
+       write(*,*) '  rp(1,1), rp(1,2)=', rp(1,1), rp(1,2)
        do np = 1, imp1
+c        write(*,*) ' np, sanp, rp=', np, sanp(np), rp(np,2)
+c this works        write(*,*) ' np=', np
+        write(*,*) ' np=', np, ' sanp=', sanp(np)
+        write(*,*) ' rp=', rp(np,2)
         sanp(np) = sanp(np) + rp(np,2)*wfac
         sfcp(np) = sfcp(np) + rp(np,1)*wfac
        enddo
@@ -496,8 +513,10 @@ c     print *, '++++++++++++++++++++++++++++++++++++'
 c      print *, '    HIT RATE, FALSE ALARM OUTPUT    '
 c     print *, '++++++++++++++++++++++++++++++++++++'
 
-      tnyy = .0
-      tnyn = .0
+cyl      tnyy = .0
+cyl      tnyn = .0
+      tnyy = 0.0
+      tnyn = 0.0
       do np = 1, imp1
        tnyy = tnyy + fyy(np)    ! total analysis/observation
        tnyn = tnyn + fyn(np)
@@ -516,6 +535,9 @@ c      hr = h/(h+m), fa=f/(f+c)
        endif
        if (tnyn.ne.0.0) then
         fal(np) = fnof/tnyn
+cyl
+        write(*,*) 'np, fal, fnof, tnyn=', np, fal(np), fnof, tnyn
+cyl
        endif
       enddo
 
@@ -631,7 +653,7 @@ c     write (*,'(26f6.0)') (fst(i),i=1,m),obs,(clm(i),i=1,ib+1)
       irt=0
       rp=0.0
       icnt=0
-
+      write(*,*) 'reli check 1, ib, obs=', ib, obs
       if (ib.eq.1) then
        IF(nthrs.le.0) THEN
          do n = 1, m
@@ -696,16 +718,22 @@ c     write (*,'(26f6.0)') (fst(i),i=1,m),obs,(clm(i),i=1,ib+1)
       elseif (ib.ge.2) then
 ccc for example: ib=2 2 equally-a-likely-bin
        icnt=0
+       write(*,*) 'reli check 2, m=',m
        do n = 1, m
         if (fst(n).le.clm(2)) then
          icnt=icnt+1
         endif
+        write(*,*) '  in do loop, n, fst,clm=', n, fst(n), clm(2)
        enddo
+       write(*,*) 'reli check 3, icnt,rp(1,1),rp(1,2)=',
+     &          icnt,rp(1,1),rp(1,2)
        rp(icnt+1,1)=rp(icnt+1,1)+1.0
        if (obs.le.clm(2)) then
         rp(icnt+1,2)=rp(icnt+1,2)+1.0
        endif
 
+       write(*,*) 'reli check 4, icnt,rp(1,1),rp(1,2)=',
+     &          icnt,rp(1,1),rp(1,2)
        icnt=0
        do n = 1, m
         if (fst(n).gt.clm(ib)) then
@@ -727,6 +755,8 @@ ccc FHO~ case
          endif
         enddo
         rp(icnt+1,1)=rp(icnt+1,1)+1.0
+       write(*,*) 'reli check 5, icnt,rp(1,1),rp(1,2)=',
+     &          icnt,rp(1,1),rp(1,2)
         if (obs.gt.clm(i).and.obs.le.clm(i+1)) then
          rp(icnt+1,2)=rp(icnt+1,2)+1.0
         endif
@@ -736,6 +766,7 @@ ccc FHO~ case
        irt=99
       endif
 
+      write(*,*) 'reli check n, ib,rp(1,1),rp(1,2)=', ib,rp(1,1),rp(1,2)
       return   
       end
 
@@ -1354,10 +1385,6 @@ ccc... data for assume xml, xc and xl for totally 18 levels
      *          1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00,1.00/
        data xl /1.05,1.10,1.25,1.50,2.00,3.00,5.00,8.00,10.0,
      *          18.0,27.0,40.0,60.0,90.0,140.,210.,350.,500./
-
-       v=0.0
-       fv=0.0
-       
 c
 c      The following calculation will base on equation (7)
 c
@@ -1394,8 +1421,8 @@ ccc... loop over cost/loss ratios (r=C/Lp)
          xme1 = clfr*xl(j)/xl(j)
          xme2 = clfr*xml(j)/xl(j)+(1-clfr)*xc(j)/xl(j)
          xme  = xme1
-        if(xme2.lt.xme1) xme=xme2
-        if(xme2.lt.xme1) print *,'always protect',xme1,xme2
+         if(xme2.lt.xme1) xme=xme2
+        if(xme2.lt.xme1) print *,'always protect'
          if(xme2.lt.xme1) np=1
 c        if(xme2.ge.xme1) print *,'never  protect'
          if(xme2.ge.xme1) np=0
@@ -1403,9 +1430,9 @@ c        if(xme2.ge.xme1) print *,'never  protect'
          xmecl  = xme                                 ! min[o,r]
          xmepf  = clfr*xml(j)/xl(j)                   ! o.r 
 
-!         write(*,12)'j,mxme1,xme2,clfr,xml,xl,xmecl,xmepf=',
-!     +      j, xme1,xme2,clfr,xml(j),xl(j),xmecl,xmepf
-!12       format(a40, i3,2x,7f6.3)    
+c         write(*,12)'j,mxme1,xme2,clfr,xml,xl,xmecl,xmepf=',
+c     +      j, xme1,xme2,clfr,xml(j),xl(j),xmecl,xmepf
+c12       format(a30, i3,2x,7f6.3)    
 c
 c     loop over ensemble probabilities
 c        if hr=1, far=0, perfect forecast, xmefc = xmepf, v = 1.0
@@ -1415,26 +1442,22 @@ c        do i = 1, im1
 
          do i = 2, im1
 c note: h+m=o, h+m+f+c=1, clfr=o, hr=h/(h+m), far=f/(f+c), xml/xl=r, xc/xl=r
-          if((xmecl-xmepf).ne.0.0) then     !Add for Dell  
-            xmefc(i) = clfr*hr(i)*xml(j)/xl(j)          ! h.r    
+          xmefc(i) = clfr*hr(i)*xml(j)/xl(j)          ! h.r    
      *             + clfr*(1-hr(i))*xl(j)/xl(j)       ! m 
      *             + (1-clfr)*far(i)*xc(j)/xl(j)      ! f.r
-            v(i-1,2)   = (xmecl-xmefc(i))/(xmecl-xmepf) 
-!         print *, 'im=',i,'xmefc=', xmefc(i),' hr=',hr(i),
-!     +      ' fa=',far(i),' value=',v(i-1,2)
-          else
-            v(i-1,2) = -99.0
-          end if
+          v(i-1,2)   = (xmecl-xmefc(i))/(xmecl-xmepf) 
+c         print *, 'im=',i,'xmefc=', xmefc(i),' hr=',hr(i),
+c     +      ' fa=',far(i),' value=',v(i-1,2)
          enddo     
 
          call sortm(v,im1-1,2,2)
 
          fv(j) = v(im1-1,2)
-!         write(6,66)  j,1./xl(j),np,v(im1-1,2),v(im1-1,1)
+c         write(6,66)  j,1./xl(j),np,v(im1-1,2),v(im1-1,1)
         enddo               ! do j = 1, 18
 
 c         write(6,67)
-! 66    format(1x,i4,f7.4,i4,2f8.3)
+c 66    format(1x,i4,f7.4,i4,2f8.3)
 c 67    format(1x)
 
        return

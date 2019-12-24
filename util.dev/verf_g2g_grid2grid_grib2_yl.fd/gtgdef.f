@@ -61,7 +61,9 @@ C
             kgds(2+3)=1059
 
         else if (model(1:4).eq.'href' ) then
+cyl
             kgds=0
+cyl
             kgds(2+2)=1121
             kgds(2+3)=881
             kgds(1+2)=0

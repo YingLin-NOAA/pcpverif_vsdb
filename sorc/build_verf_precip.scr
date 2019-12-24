@@ -102,7 +102,7 @@ make clean
 cd ${BASE}/verf_g2g_grid2grid_grib2.fd
 make clean
 make
-make install
+make mvexec
 make clean
 
 ##############################

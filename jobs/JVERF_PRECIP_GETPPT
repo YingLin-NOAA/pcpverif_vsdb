@@ -177,13 +177,6 @@ msg="JOB $job HAS COMPLETED NORMALLY."
 postmsg "$jlogfile" "$msg"
 
 cd $DATAROOT
-if [ "$RUN_ENVIR" = dev ]; then  ### for dev only
-  userid=`whoami`
-  if [ $bsubnext = Y -a $cronmode = Y -a $machine = wcoss -a "$userid" = Ying.Lin ]; then
-    bsub < $HOMEverf_precip/ecf/jverf_precip_verfgen_03h.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/cron.verfgen03.out 2>&1
-    bsub < $HOMEverf_precip/ecf/jverf_precip_verfgen_24h.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/cron.verfgen24.out 2>&1
-  fi
-fi
 
 if [ $RM_DATA = YES ]; then
   rm -rf $DATA

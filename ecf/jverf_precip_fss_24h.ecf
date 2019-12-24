@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #BSUB -J jverf_precip_fss24
 #BSUB -o /gpfs/dell2/ptmp/Ying.Lin/cron.out/fss24.%J
 #BSUB -e /gpfs/dell2/ptmp/Ying.Lin/cron.out/fss24.%J
