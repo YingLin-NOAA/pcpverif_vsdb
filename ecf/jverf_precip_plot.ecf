@@ -26,7 +26,7 @@ export debug=N
 export domain=conus
 export job=verf_precip_plot_$domain
 
-export version=v4.3.2
+export version=v4.3.3
 
 # This script has three optional arguments if run interactively.  WCOSS LSF 
 # (bsub) does not accept arguments in the LSF script, in that case, set up
