@@ -13,8 +13,6 @@
 # Usage:  exverf_precip_getppt.sh.sms
 #  Models that we currently use:
 #  -----------------------------
-#  - Stage2
-#  - Stage4
 #  - nam
 #  - namx
 #  - namy
@@ -157,117 +155,6 @@ fi
 # End of getting the international data
 
 cd $DATA
-
-# ST2-ST4(daym1)
-# For Stage II and Stage IV, copy over the 24h totals, decompress, rename.
-# (the yyyymmddhh in the original ST2/4 names are the ending hour of the 
-# accumulation period):
-#   Stage II: ST2ml${day}12.24h.Z   --> st2_${daym1}12_000_024
-#   Stage IV: ST4.${day}12.24h.Z    --> st4_${daym1}12_000_024
-# On WCOSS, it'll be $file.gz.  Copy over $file.* (instead of $file.Z or
-# $file.gz, so the script works during the transition period). 
-# gunzip will uncompress either type of files. 
-# 
-if [ $run_st2 = 1 ]
-then
-   ST2FILE=ST2ml${day}12.24h
-   cp $COMINpcpanl/pcpanl.$day/${ST2FILE}.gz .
-   gunzip $ST2FILE 
-   cp $ST2FILE $COMOUT.${daym1}/st2_${daym1}12_000_024
-fi
-
-if [ $run_st4 = 1 ]
-then
-   ST4FILE=ST4.${day}12.24h
-   cp $COMINpcpanl/pcpanl.$day/${ST4FILE}.* .
-   gunzip $ST4FILE
-   cp $ST4FILE $COMOUT.${daym1}/st4_${daym1}12_000_024
-fi
-
-if [ $run_st4x = 1 ]
-then
-   ST4XFILE=ST4.${day}12.24h
-   cp /com/hourly/para/nam_pcpn_anal.$day/${ST4XFILE}.* .
-   gunzip $ST4XFILE
-   cp $ST4XFILE $COMOUT.${daym1}/st4x_${daym1}12_000_024
-fi
-
-if [[ $run_rtma = 1 && $run_rtmax = 1 ]]
-then
-  RTMAROOT=/com/hourly/prod/nam_pcpn_anal
-  RTMAXROOT=/com/hourly/para/nam_pcpn_anal
-  accdate=${daym1}15
-
-  while [ $accdate -le ${day}12 ];
-  do
-    rtmaflag=Y
-    rtmaxflag=Y
-    cat > input_acc3h_rtma << EOF
-obs
-rtma.
-EOF
-    cat > input_acc3h_rtmax << EOF
-obs
-rtmax.
-EOF
-    rdate=`$NDATE -2 $accdate`
-    while [ $rdate -le $accdate ]
-    do
-      rday=`echo $rdate | cut -c 1-8`
-      cp $RTMAROOT.$rday/pcprtma.$rdate .
-      err=$?
-      if [ $err -eq 0 ]; then
-        $CNVGRIB -g21 pcprtma.$rdate pcprtma.$rdate.grb1
-        echo pcprtma.$rdate.grb1 >> input_acc3h_rtma
-      else
-        rtmaflag=N
-        echo Copying $RTMAROOT.$rday/pcprtma.$rdate failed
-      fi
-      
-      cp $RTMAXROOT.$rday/pcprtma.$rdate pcprtmax.${rdate}
-      err=$?
-      if [ $err -eq 0 ]; then
-        $CNVGRIB -g21 pcprtmax.$rdate pcprtmax.$rdate.grb1
-        echo pcprtmax.$rdate.grb1 >> input_acc3h_rtmax
-      else
-        rtmaxflag=N
-        echo Copying $RTMAROOT.$rday/pcprtmax.$rdate failed
-      fi
-
-      rdate=`$NDATE +1 $rdate`
-    done  # finished processing a 3hr segment
-#
-    if [ $rtmaflag = Y ]; then
-      $EXECverf_precip/nam_stage4_acc < input_acc3h_rtma
-    fi
-
-    if [ $rtmaxflag = Y ]; then
-      $EXECverf_precip/nam_stage4_acc < input_acc3h_rtmax
-    fi
- 
-    accdate=`$NDATE +3 $accdate`
-  done # looping through 3hr segments ending {daym1}15, ${daym1}18 ... ${day}12
-
-  cp rtma.${daym1}15.03h $COMOUT.$daym1/rtma_${daym1}12_000_003
-  cp rtma.${daym1}18.03h $COMOUT.$daym1/rtma_${daym1}12_003_006
-  cp rtma.${daym1}21.03h $COMOUT.$daym1/rtma_${daym1}12_006_009
-  cp rtma.${day}00.03h $COMOUT.$daym1/rtma_${daym1}12_009_012
-  cp rtma.${day}03.03h $COMOUT.$daym1/rtma_${daym1}12_012_015
-  cp rtma.${day}06.03h $COMOUT.$daym1/rtma_${daym1}12_015_018
-  cp rtma.${day}09.03h $COMOUT.$daym1/rtma_${daym1}12_018_021
-  cp rtma.${day}12.03h $COMOUT.$daym1/rtma_${daym1}12_021_024
-
-  cp rtmax.${daym1}15.03h $COMOUT.$daym1/rtmax_${daym1}12_000_003
-  cp rtmax.${daym1}18.03h $COMOUT.$daym1/rtmax_${daym1}12_003_006
-  cp rtmax.${daym1}21.03h $COMOUT.$daym1/rtmax_${daym1}12_006_009
-  cp rtmax.${day}00.03h $COMOUT.$daym1/rtmax_${daym1}12_009_012
-  cp rtmax.${day}03.03h $COMOUT.$daym1/rtmax_${daym1}12_012_015
-  cp rtmax.${day}06.03h $COMOUT.$daym1/rtmax_${daym1}12_015_018
-  cp rtmax.${day}09.03h $COMOUT.$daym1/rtmax_${daym1}12_018_021
-  cp rtmax.${day}12.03h $COMOUT.$daym1/rtmax_${daym1}12_021_024
-
-fi # if run_rtma=1 && run_rtmax=1
-
 
 ########################################
 # Now start retrieving NCEP model data:
