@@ -8,7 +8,7 @@ day=$day1
 while [ $day -le $day2 ]
 do
   g2p_qcdlygauges.ksh $day
-  day=`/nwprod/util/ush/finddate.sh $day d+1`
+  day=`finddate.sh $day d+1`
 done
 exit
 

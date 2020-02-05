@@ -18,7 +18,7 @@ export PS4='$SECONDS + '
 date
 
 export machine=${machine:-wcoss}
-export RUN_ENVIR=${RUN_ENVIR:-prod}
+export RUN_ENVIR=${RUN_ENVIR:-nco}
 export SENDECF=${SENDECF:-YES}
 
 #################################################################
@@ -61,9 +61,9 @@ then
   #   is bsub'd by scripts/exverf_precip_plotpcp.sh.ecf and needs the plots
   #   and index.html contained in this working directory.
   if [ $cronmode = N -a $debug = N ]; then
-     RM_DATA=YES
+    KEEPDATA=NO
   else
-     RM_DATA=NO
+    KEEPDATA=YES
   fi
 fi
 
@@ -71,21 +71,16 @@ fi
 # This block can be modified for different Production test
 # environment. This is used for operational testings
 ###############################################################
-if [ $RUN_ENVIR = "prod" -a $envir != "prod" ]   ### For Operations
+if [ $RUN_ENVIR = "nco" -a $envir != "prod" ]   ### For Operations
 then
    export SENDDBN=${SENDDBN:-YES}
-   export jlogfile=${jlogfile:-/com/logs/${envir}/jlogfile}
-   export DBNROOT=/nwprod/spa_util/fakedbn
    export DBNLOG=${DBNLOG:-YES}
-   export DATAROOT=${DATAROOT:-/tmpnwprd2}
 fi
 
 ###########################################################
 # obtain unique process id (pid) and make temp directories
 ###########################################################
 export pid=$$
-export RM_DATA=${RM_DATA:-YES};
-export DATAROOT=${DATAROOT:-/tmpnwprd1}
 export DATA=$DATAROOT/${job}.${pid}
 mkdir -p $DATA
 cd $DATA 
@@ -158,9 +153,9 @@ export vday=${vday:-$PDYm1}
 #################################################
 # Set up the INPUT and OUTPUT directories
 #################################################
-export COMIN=${COMIN:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
+export COMIN=${COMIN:-$COMROOT/verf/${envir}/precip}
 export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
-export COMOUT=${COMOUT:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
+export COMOUT=${COMOUT:-$COMROOT/verf/${envir}/precip}
 
 if [ ! -d $COMOUT ]; then
   mkdir -p -m 775 $COMOUT
@@ -179,9 +174,8 @@ cat $pgmout
 msg="JOB $job HAS COMPLETED NORMALLY."
 postmsg "$jlogfile" "$msg"
 
-cd $DATAROOT
-
-if [ $RM_DATA = YES ]; then
+if [ "$KEEPDATA" != "YES" ] ; then
+  cd $DATAROOT
   rm -rf $DATA
 fi
 

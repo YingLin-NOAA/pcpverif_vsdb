@@ -15,7 +15,7 @@ export PS4='$SECONDS + '
 date
 
 export machine=${machine:-wcoss}
-export RUN_ENVIR=${RUN_ENVIR:-prod}
+export RUN_ENVIR=${RUN_ENVIR:-nco}
 export SENDECF=${SENDECF:-YES}
 
 #----------------  Notes for dev -----------------------------
@@ -43,9 +43,9 @@ then
   export jlogfile=${jlogfile:-$DATAROOT/jlogfile}
   export SENDDBN=NO
   if [ $debug = N ]; then
-    RM_DATA=YES
+    KEEPDATA=NO
   else
-    RM_DATA=NO
+    KEEPDATA=YES
   fi
 fi
 
@@ -53,21 +53,16 @@ fi
 # This block can be modified for different Production test
 # environment. This is used for operational testings
 ###############################################################
-if [ $RUN_ENVIR = "prod" -a $envir != "prod" ]   ### For Operations
+if [ $RUN_ENVIR = "nco" -a $envir != "prod" ]   ### For Operations
 then
    export SENDDBN=${SENDDBN:-YES}
-   export jlogfile=${jlogfile:-/com/logs/${envir}/jlogfile}
-   export DBNROOT=/nwprod/spa_util/fakedbn
    export DBNLOG=${DBNLOG:-YES}
-   export DATAROOT=${DATAROOT:-/tmpnwprd2}
 fi
 
 ###########################################################
 # obtain unique process id (pid) and make temp directories
 ###########################################################
 export pid=$$
-export DATAROOT=${DATAROOT:-/tmpnwprd1}
-export RM_DATA=${RM_DATA:-YES};
 export DATA=$DATAROOT/${job}.${pid}
 mkdir -p $DATA
 cd $DATA 
@@ -75,7 +70,7 @@ cd $DATA
 ####################################
 # File To Log Msgs
 ####################################
-export jlogfile=${jlogfile:-/com/logs/jlogfiles/jlogfile.${job}.${pid}}
+export jlogfile=${jlogfile:-${DATA}/jlogfile}
 
 ####################################
 # Determine Job Output Name on System
@@ -105,7 +100,7 @@ export SENDRZDM=${SENDRZDM:-NO}      # for daily side-by-side plots
 # Specify Execution Areas
 # Non-dev uses the follwing block instead of parm/verf_precip_config
 ################################################################
-export HOMEverf_precip=${HOMEverf_precip:-/nw${envir}/verf_precip.${verf_precip_ver}}
+export HOMEverf_precip=${HOMEverf_precip:-${NWROOT}/verf_precip.${verf_precip_ver}}
 export EXECverf_precip=${EXECverf_precip:-$HOMEverf_precip/exec}
 export PARMverf_precip=${PARMverf_precip:-$HOMEverf_precip/parm}
 export USHverf_precip=${USHverf_precip:-$HOMEverf_precip/ush}
@@ -135,7 +130,7 @@ export vday=${vday:-$PDYm2}
 #################################################
 # Set up the INPUT and OUTPUT directories
 #################################################
-export COMIN=${COMIN:-/com/verf/${envir}/precip}
+export COMIN=${COMIN:-$COMROOT/verf/${envir}/precip}
 # In dev mode, some model precip files might come from prod side of $COMIN
 # (specified in parm file with 'altcomin', in which case, the scripts will
 # look for input file in the alternative directory '$COMIN2'.  If altcomin
@@ -143,14 +138,14 @@ export COMIN=${COMIN:-/com/verf/${envir}/precip}
 # Since prod side does not use that parm file, we need to pre-specify
 # that COMIN1=$COMIN.  
 export COMIN1=$COMIN
-export DCOM=${DCOM:-/dcom/us007003}
+export DCOM=${DCOM:-$DCOMROOT/prod}
 export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
 # COMCCPA is a prefix, not directory name.  Directory is
-#   /gpfs/dell1/nco/ops/com/ccpa/prod/ccpa.yyyymmdd
-export COMCCPA=${COMCCPA:-/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa}
+#   $(compath.py ccpa/prod)/ccpa.yyyymmdd
+export COMCCPA=${COMCCPA:-$(compath.py ccpa/prod)/ccpa}
 
-export COMOUT=${COMOUT:-/com/verf/${envir}/precip}
-export COMVSDB=${COMVSDB:-/com/verf/${envir}/vsdb/precip}
+export COMOUT=${COMOUT:-$COMROOT/verf/${envir}/precip}
+export COMVSDB=${COMVSDB:-$COMROOT/verf/${envir}/vsdb/precip}
 
 if [ ! -d $COMVSDB ]; then
   mkdir -p -m 775 $COMVSDB
@@ -181,8 +176,9 @@ cat $pgmout
 msg="JOB $job HAS COMPLETED NORMALLY."
 postmsg "$jlogfile" "$msg"
 
-cd $DATADIR
-if [ $RM_DATA = YES ]; then
+if [ "$KEEPDATA" != "YES" ] ; then
+  cd $DATAROOT
   rm -rf $DATA
 fi
+
 date

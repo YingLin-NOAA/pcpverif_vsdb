@@ -37,7 +37,7 @@ if [ $domain = conus ]; then
   tar xvf $COMIN/modpcpsum.$vday.gz
 
   # 2018/07/19: dev: get ukmo from prod modpcpsum, to plot with python.  
-  prdmodpcpsum=/gpfs/dell1/nco/ops/com/verf/prod/precip.$vday/modpcpsum.$vday.gz
+  prdmodpcpsum=${COMIN}.$vday/modpcpsum.$vday.gz
   if [ $RUN_ENVIR = dev ]; then 
     tar xvf $prdmodpcpsum `tar tf $prdmodpcpsum | grep ukmo`
   fi
@@ -53,7 +53,7 @@ if [ $domain = conus ]; then
 
     # Copy over the production gif files.
     if [ $USEPRD4PLT = YES ]; then
-      prodplottar=/gpfs/dell1/nco/ops/com/verf/prod/precip.${vday}/pcpplot_${vday}12.tar
+      prodplottar=${COMIN}.${vday}/pcpplot_${vday}12.tar
       if [ -s $prodplottar ]; then
         tar xvf $prodplottar
       else
@@ -172,7 +172,7 @@ fi
 if [ $RUN_ENVIR = dev -a $machine = wcoss ]; then
   # Copy over the 1/4 deg CPC analysis from /dcom.  Sometimes, say if devwcoss
   # has been down, and the files are not on /dcom, go get it from prodwcoss.
-  CPCDIR=/dcom/us007003/$vday/wgrbbul/cpc_rcdas
+  CPCDIR=$DCOMROOT/prod/$vday/wgrbbul/cpc_rcdas
   cp $CPCDIR/PRCP_CU_GAUGE_V1.0GLB_0.25deg.lnx.$vday.RT cpcfile.$vday
   err=$?
   if [ $err -ne 0 ]; then
