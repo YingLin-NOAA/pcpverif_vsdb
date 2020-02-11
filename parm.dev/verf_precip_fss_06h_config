@@ -12,7 +12,6 @@ export run_conusnest=0
 export run_conusnestx=0
 export run_conusarw=0
 export run_conusnmmb=0
-export run_hpc=0
 export run_nssl4arw=0
 export run_namrr=0
 export run_conusrr=0
