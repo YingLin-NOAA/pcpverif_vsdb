@@ -67,9 +67,9 @@ fi
 if [ "$RUN_ENVIR" = dev ]; then        ### for dev 
 # ------------------------------------------------------
 # Most frequently made changes: 
-  export HOMEverf_precip=/gpfs/dell2/emc/verification/noscrub/Ying.Lin/verf_precip.${version}
-  export PARMverf_precip=$HOMEverf_precip/parm
-  export DATAverf_precip=/gpfs/dell2/ptmp/$LOGNAME/verf.dat.${version}
+  export HOMEverf_precip=/gpfs/dell2/emc/verification/noscrub/Ying.Lin/verf_precip
+  export PARMverf_precip=$HOMEverf_precip/parm.dev
+  export DATAverf_precip=/gpfs/dell2/ptmp/$LOGNAME/verf.dat
   export bsubnext=Y   # bsub verfgen24 and verfgen03?  
 # ------------------------------------------------------
   # DATAROOT is NCO-speak for 'wrkdir'.
