@@ -11,9 +11,19 @@
 #model|grids|cycles|frange|nests
 #=========================================
 nam|00 12|84|
-gfs|00 12|180|
+namx|00 12|84|
+namb|00 12|84|
+gfs|00 12|84|
+gfsv14|00 12|84|
 conusnest|00 12|60|
+conusnestx|00 12|60|
+namrr|00 06 12 18|84|
+conusrr|00 06 12 18|60|
+namrrz|00 06 12 18|84|
+conusrrz|00 06 12 18|60|
 conusarw|00 12|48|
-conusarw2|00 12|48|
 conusnmmb|00 12|48|
+conusarwx|00 12|48|
+conusnmmbx|00 12|48|
+hpc|00 12|72|
 nssl4arw|00 12|36|
