@@ -16,10 +16,11 @@ MODEL=`echo $model | tr '[a-z]' '[A-Z]'`
   
   cycles="00 06 12 18"
 
-  if [ ! -d $COMVSDB/${model} ]; then
-    mkdir -p $COMVSDB/${model}
+  if [ ! -d $COMVSDB/${model}v3 ]; then
+    mkdir -p $COMVSDB/${model}v3
   fi
 
   for ncyc in $cycles ; do
-    cat ${MODEL}_${var}_${vday}${ncyc}.vsdb >> $COMVSDB/${model}/${model}_${vday}.vsdb
+#    cat ${MODEL}_${var}_${vday}${ncyc}.vsdb >> $COMVSDB/${model}/${model}_${vday}.vsdb
+    cat ${MODEL}_${var}_${vday}${ncyc}.vsdb | sed 's/HREF/HREFv3/g' >> $COMVSDB/${model}v3/${model}v3_${vday}.vsdb
   done

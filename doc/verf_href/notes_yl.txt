@@ -1,15 +1,31 @@
+NOTE for HREFv3 (verf_precip.v4.4.0): 
+  - ush/verf_g2g_get_href.sh current has 
+      href=${COMHREF}.${vday}_expv3/verf_g2g/href.m${mbr} ....
+  - ush/verf_g2g_fitsg2g_grib2.sh currently has
+      mv grid2grid.vsdb HREF_${var}_${YYYYMMDDHH}.vsdb
+  - ush/verf_g2g_run_href.sh: near the end, temporarily replacing '${model}'
+      with '${model}v3'
+  - ush/verf_g2g_run_href.sh: near the end, use 'sed' to temporarily substitute
+    'HREF' in the final VSDBs with 'HREFv3'
+
 ecf
   |_jobs
      |_script
        |_ush/verf_g2g_run_href.sh href pc3
           |_ush/verf_g2g_href.sh $vday href pc3 namnest
-             |_ush/verf_g2g_prepg2g_grib2.sh
-             |_ush/cp_single_Ref_exref.sh namnest 255
-             |_ush/verf_g2g_fitsg2g_grib2.sh 
-                |_$EXECverf_g2g/verf_g2g_grid2grid_grib2 (generates VSDBs)
+          |  |_ush/verf_g2g_prepg2g_grib2.sh
+          |  |_ush/cp_single_Ref_exref.sh namnest 255
+          |  |_ush/verf_g2g_fitsg2g_grib2.sh 
+          |     |_$EXECverf_g2g/verf_g2g_grid2grid_grib2 (generates VSDBs)
+          |
+          |  for ncyc in $cycles ; do
+          |     cat ${MODEL}_${var}_${vday}${ncyc}.vsdb >> 
+          |       $COMVSDB/${model}/${model}_${vday}.vsdb
+          |  done
+     
 
 Input file location:
-  Set in parm/verf_g2g_dev_config:
+  Set in jobs/JVERF_GRID2GRID_HREF
   export COMHREF=${COMHREF:-/gpfs/hps/nco/ops/com/hiresw/prod/href}
   HREF's outpout for verf_href are in 
     ${COMHREF}.${vday}/verf_g2g
@@ -59,6 +75,21 @@ Same results when compiling verf_g2g_grid2grid_grib2.fd
 
 Normal - OK. 
 ------------------------------------------------------------------
+Where did files such as href.ens01.t12z.apcp.f06.grib2 come from: 
+  In ush/verf_g2g_get_href.sh:
+  href=${COMHREF}.${vday}_expv3/verf_g2g/href.m${mbr}.t${cycle}z.conus.f${fhr}
+  $WGRIB2 -match ":APCP:surface" $href |$WGRIB2 -i $href -grib $DATA/apcp
+  $COPYGB2 -g"20 6 0 0 0 0 0 0 1121 881 23117000 240977000 8 60000000 255000000 4763000 4763000 0 64" -i2,1 -x $DATA/apcp $DATA/href.ens${mbr}.t${cycle}z.apcp.f${fhr}
+
+  /gpfs/hps/nco/ops/com/hiresw/prod/href.20200104/verf_g2g/ has both
+     href.m01.t12z.conus.f06
+  and
+     prcip.m01.t12z.conus.f06
+  It appears that the APCP field in the prcip.m01.t12z.conus.f06 is the same
+     as that in the href.* file.  
+
+
+------------------------------------------------------------------
 Job output:
 stty: standard input: Inappropriate ioctl for device
 ModuleCmd_Load.c(208):ERROR:105: Unable to locate a modulefile for 'ruby'
@@ -90,7 +121,7 @@ Binbin's href_20170330.vsdb: 104 lines, a complete VSDB for the day?
   HREF/8 RELP (relative position: % - closest to observation. not in metviewer yet)  at 2017033006, for 6/18/24/30h fcsts.  
     
   HREF/8 RMSE (five numbers are? spread,RMSE,MERR- mean err, ,ABSE absolu. err, PAC (probability anomaly correlation)        at 2017033006, for 6/18/24/30h fcsts  (Originally from Yuejian)
-  HREF/8 RELI (reliability - 18 numbers)           at 2017033006, for 6/18/24/30h fcsts
+  HREF/8 RELI (reliability - 8 numbers)           at 2017033006, for 6/18/24/30h fcsts
   HREF/8 HTFR (Hit rate/false alarm rate - 18 numbers. To generate ROC)           at 2017033006, for 6/18/24/30h fcsts
   HREF/8 RPS  (Ranked probablility score -  9 numbers, RPSf, RPSc, RPSS, CRPSf, CRPSc, [ c- means climatology - reference) CRPSS [skill score])           at 2017033006, for 6/18/24/30h fcsts
   HREF/8 BSS  (BSf, BSc, BSS, Reli, Reso, Unc, Unc, Inf, BSl, BSh (lowest/highest)     9 numbers)           at 2017033006, for 6/18/24/30h fcsts

@@ -41,7 +41,7 @@ if [ $var = 'pc3' ] ; then
   HH=00 # initial validation hour
   END=18
 
-  NMODEL=8
+  NMODEL=10
   export ohead=ccpa
   export ogrbtype=g255.f00
   export otm=

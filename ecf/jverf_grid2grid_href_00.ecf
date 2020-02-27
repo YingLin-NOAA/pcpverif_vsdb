@@ -1,7 +1,7 @@
 #!/bin/bash
-#BSUB -J jverf_grid2grid_href_00
-#BSUB -o /gpfs/dell2/ptmp/Ying.Lin/cron.out/verf_g2g_href.%J
-#BSUB -e /gpfs/dell2/ptmp/Ying.Lin/cron.out/verf_g2g_href.%J
+#BSUB -J jverf_grid2grid_hrefv3_00
+#BSUB -o /gpfs/dell2/ptmp/Ying.Lin/cron.out/verf_g2g_hrefv3.%J
+#BSUB -e /gpfs/dell2/ptmp/Ying.Lin/cron.out/verf_g2g_hrefv3.%J
 #BSUB -n 1
 #BSUB -q "dev"
 #BSUB -W 01:45
@@ -21,14 +21,17 @@ export cyc=00
 export job=jverf_grid2grid_href_apcp
 
 # CALL executable job script here
-export version=v4.3.2
-#export vday=20191220
+export version=v4.4.0
+#export vday=20200104
 export NOSCRUB=/gpfs/dell2/emc/verification/noscrub/Ying.Lin
 export HOMEverf_href=$NOSCRUB/verf_precip.${version}
+# note that Matt's test files are in 
+#  /gpfs/hps2/ptmp/Matthew.Pyle/com/hiresw/test/href.20200101_expv3/verf_g2g
+export COMHREF=/gpfs/hps2/ptmp/Matthew.Pyle/com/hiresw/test/href
 export COM_IN=/gpfs/dell2/ptmp/$LOGNAME/verf.dat.${version}
 export COM_OUT=${COM_IN}
 export COMVSDB=${COM_OUT}/vsdb
-export DATA_IN=/gpfs/dell2/ptmp/$LOGNAME/verf_href/tmpnwprd
+export DATA_IN=/gpfs/dell2/ptmp/$LOGNAME/verf_href.$version/tmpnwprd
 
 $HOMEverf_href/jobs/JVERF_GRID2GRID_HREF
 
