@@ -15,7 +15,7 @@ date
 #################################################################
 
 export machine=${machine:-wcoss}
-export RUN_ENVIR=${RUN_ENVIR:-prod}
+export RUN_ENVIR=${RUN_ENVIR:-nco}
 export SENDECF=${SENDECF:-YES}
 
 #################################################################
@@ -45,9 +45,9 @@ then
   export DATAROOT=${DATAROOT:-/tmpnwprd2}
   export SENDDBN=NO
   if [ $debug = N ]; then
-    RM_DATA=YES
+    KEEPDATA=NO
   else
-    RM_DATA=NO
+    KEEPDATA=YES
   fi
 fi
 
@@ -55,21 +55,16 @@ fi
 # This block can be modified for different Production test
 # environment. This is used for operational testings
 ###############################################################
-if [ $RUN_ENVIR = "prod" -a $envir != "prod" ]   ### For Operations
+if [ $RUN_ENVIR = "nco" -a $envir != "prod" ]   ### For Operations
 then
    export SENDDBN=${SENDDBN:-YES}
-#  export DBNROOT=/nwprod/spa_util/para_dbn
-   export DBNROOT=/nwprod/spa_util/fakedbn
    export DBNLOG=${DBNLOG:-YES}
-   export DATAROOT=${DATAROOT:-/tmpnwprd2}
 fi
 
 ###########################################################
 # obtain unique process id (pid) and make temp directories
 ###########################################################
 export pid=$$
-export RM_DATA=${RM_DATA:-YES};
-export DATAROOT=${DATAROOT:-/tmpnwprd1}
 export DATA=$DATAROOT/${job}.${pid}
 mkdir -p $DATA
 cd $DATA 
@@ -139,12 +134,12 @@ export vday=${vday:-$PDYm1}
 #################################################
 # Set up the INPUT and OUTPUT directories
 #################################################
-export COMIN=${COMIN:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
+export COMIN=${COMIN:-$COMROOT/verf/${envir}/precip}
 export COMINpcpanl=${COMINpcpanl:-$(compath.py pcpanl/prod)}
-export COMCCPA=${COMCCPA:-/gpfs/dell1/nco/ops/com/ccpa/prod/ccpa}
+export COMCCPA=${COMCCPA:-$(compath.py ccpa/prod)/ccpa}
 
-export COMOUT=${COMOUT:-/gpfs/dell2/nco/ops/com/verf/${envir}/precip}
-export COMVSDB=${COMVSDB:-/gpfs/dell2/nco/ops/com/verf/${envir}/vsdb/precip}
+export COMOUT=${COMOUT:-$COMROOT/verf/${envir}/precip}
+export COMVSDB=${COMVSDB:-$COMROOT/verf/${envir}/vsdb/precip}
 
 if [ ! -d $COMVSDB ]; then
   mkdir -p -m 775 $COMVSDB
@@ -180,18 +175,18 @@ postmsg "$jlogfile" "$msg"
 
 if [ "$RUN_ENVIR" = dev ]; then  ### for dev only
   if [ $bsubnext = Y -a $cronmode = Y -a $machine = wcoss ]; then
-    echo 'skip the following two until para on phase1 is discontinued.
+    echo "skip the following two until para on phase1 is discontinued."
 #    bsub < $HOMEverf_precip/util.dev/trans_tar_dev_vsdb_for_tempest.ksh > /ptmpp1/Ying.Lin/cron.out/bsub.devtarfortempest 2>&1
 #    bsub < $HOMEverf_precip/util.dev/trans_save_verf.dat.ksh > /ptmpp1/Ying.Lin/cron.out/bsub.save_verf_dat 2>&1
   fi
 fi
 
 # 
-cd $DATAROOT
-
-if [ $RM_DATA = YES ]; then
+if [ "$KEEPDATA" != "YES" ] ; then
+  cd $DATAROOT
   rm -rf $DATA
 fi
+
 date
 
 

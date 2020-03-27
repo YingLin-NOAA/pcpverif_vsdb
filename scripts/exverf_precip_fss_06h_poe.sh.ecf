@@ -20,7 +20,7 @@ mkdir -p $DATA/$vhr/vsdb/subtotal.${vhr}z
 
 cd $DATA/$vhr
 # Run setup to initialize working directory and utility scripts
-setup.sh
+# JY setup.sh
 
 cp $FIXverf_precip/stage3_mask.grb .
 

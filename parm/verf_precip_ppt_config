@@ -1,6 +1,3 @@
-export run_st2=1
-export run_st4=1
-export run_rtma=0
 export run_nam=1
 export run_ndas=1
 export run_ndassoil=1

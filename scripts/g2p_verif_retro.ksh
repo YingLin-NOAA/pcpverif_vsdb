@@ -10,7 +10,7 @@ day=$day1
 
 while [ $day -le $day2 ]; do
 
-daym1=`/nwprod/util/ush/finddate.sh $day d-1`
+daym1=`finddate.sh $day d-1`
 
 yyyy=`echo $day | cut -c 1-4`
 goodarch=/meso/save/Ying.Lin/good-usa-dlyprcp/$yyyy
@@ -94,7 +94,7 @@ done
 
 mv g2p_*_${day}.dat $archive/.
 
-day=`/nwprod/util/ush/finddate.sh $day d+1`
+day=`finddate.sh $day d+1`
 done
 
 exit
