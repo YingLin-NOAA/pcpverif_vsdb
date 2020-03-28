@@ -52,7 +52,7 @@ nback2fss06=11
 #nback2fss06=15
 
 NWPROD=/gpfs/dell1/nco/ops/nwprod
-prdver=`awk -F'=' '{print $2}' $NWPROD/versions/verf_precip.ver`
+prdver=`grep verf_precip $NWPROD/versions/verf_precip.ver | awk -F'=' '{print $2}'`
 
 configfile=verf_precip_fss_06h_config
 prodfss06config=$NWPROD/verf_precip.${prdver}/parm/$configfile
