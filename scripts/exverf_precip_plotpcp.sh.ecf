@@ -37,12 +37,12 @@ if [ $domain = conus ]; then
   tar xvf $COMIN/modpcpsum.$vday.gz
 
   # 2018/07/19: dev: get ukmo from prod modpcpsum, to plot with python.  
-  prdmodpcpsum=${COMIN}.$vday/modpcpsum.$vday.gz
+  prdmodpcpsum=${COMIN2}.$vday/modpcpsum.$vday.gz
   if [ $RUN_ENVIR = dev ]; then 
     tar xvf $prdmodpcpsum `tar tf $prdmodpcpsum | grep ukmo`
   fi
 
-  if [ $RUN_ENVIR = dev -a $machine = wcoss ]; then
+  if [ $RUN_ENVIR = dev ]; then
     # Copy over modpcpsum.$vday.retro.Z, in case I made a re-run for some
     # models that were missing earlier. 
     # USEPRD4PLT is set in the ECF script (so that when testing for a new
@@ -53,7 +53,7 @@ if [ $domain = conus ]; then
 
     # Copy over the production gif files.
     if [ $USEPRD4PLT = YES ]; then
-      prodplottar=${COMIN}.${vday}/pcpplot_${vday}12.tar
+      prodplottar=${COMIN2}.${vday}/pcpplot_${vday}12.tar
       if [ -s $prodplottar ]; then
         tar xvf $prodplottar
       else

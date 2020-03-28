@@ -78,10 +78,10 @@ if [ "$RUN_ENVIR" = dev ]; then        ### for dev
   # Location of the 45-day rotating archive:
   export ARCH45DAY=$NOSCRUB/hold45days
   # Location of the EZDM directory:
-  export RZDMDIR=/home/www/emc/htdocs/mmb/ylin/pcpverif/daily.dell
+  export RZDMDIR=/home/www/emc/htdocs/mmb/ylin/pcpverif/daily
   # Use prod data for plot? # NO if testing package submitted for implementation
-  export USEPRD4PLT=NO
-# export USEPRD4PLT=YES
+# export USEPRD4PLT=NO
+  export USEPRD4PLT=YES
 # ------------------------------------------------------
   # DATAROOT is NCO-speak for 'wrkdir'.
   export DATAROOT=/gpfs/dell2/stmp/$LOGNAME/tmpnwprd
@@ -92,14 +92,4 @@ fi # end of 'is this dev?'
 
 $HOMEverf_precip/jobs/JVERF_PRECIP_PLOTPCP
 
-# Send out the data to the webserver if running in the development mode (currently RZDM)
-if [ $RUN_ENVIR = dev -a $SENDRZDM = YES ]
-then
-  
-  if [ $cronmode = Y ]; then
-    . ~/.bashrc > ~/cron.bashrc.out 2>&1; bsub < $HOMEverf_precip/util.dev/trans_send2rzdm.ksh > $CRONOUT/cron.send2rzdm_${domain} 2>&1
-  else
-    . ~/.bashrc > ~/cron.bashrc.out 2>&1; $HOMEverf_precip/util.dev/trans_send2rzdm.ksh > $CRONOUT/cron.send2rzdm_${domain} 2>&1
-  fi
-fi
 

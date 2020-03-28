@@ -169,6 +169,15 @@ echo 'Actual output starts here:'
 $HOMEverf_precip/scripts/exverf_precip_plotpcp.sh.ecf 
 #######################################################################
 
+if [ $RUN_ENVIR = dev -a $SENDRZDM = YES ] ### For Developers
+then
+  if [ $cronmode = Y ]; then
+    . ~/.bashrc > ~/cron.bashrc.out 2>&1; bsub < $HOMEverf_precip/util.dev/trans_send2rzdm.sh > $CRONOUT/cron.send2rzdm_${domain} 2>&1
+  else
+    . ~/.bashrc > ~/cron.bashrc.out 2>&1; $HOMEverf_precip/util.dev/trans_send2rzdm.sh > $CRONOUT/cron.send2rzdm_${domain} 2>&1
+  fi
+fi
+
 cat $pgmout
 
 msg="JOB $job HAS COMPLETED NORMALLY."

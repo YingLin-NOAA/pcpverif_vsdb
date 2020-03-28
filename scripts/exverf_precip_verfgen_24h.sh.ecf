@@ -120,7 +120,7 @@ else # if we are verifying OCONUS
     # Here, when cronmode=N, the calling sequence is reversed.  We're invoking
     # the script with an argument, $vday, to tell the script not to do the
     # "bsub ecf/verfgen24".  
-    $HOMEverf_precip/util.dev/trans_get_oconus_anl.ksh $vday > /ptmpp1/Ying.Lin/cron.out/getoconusanl.out 2>&1
+    $HOMEverf_precip/util.dev/trans_get_oconus_anl.sh $vday > /gpfs/dell2/ptmp/Ying.Lin/cron.out/getoconusanl.out 2>&1
   fi # If cronmode = Y, then the trans_get_oconus_anl.ksh script has already
      #   been run and placed in ${COMOUT}.${vday}.
      

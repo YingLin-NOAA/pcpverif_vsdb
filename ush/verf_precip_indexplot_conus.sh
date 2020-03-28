@@ -76,6 +76,8 @@ EOF
   done
 done
 
+cp /gpfs/dell2/nco/ops/com/pcpanl/prod/pcpanl.$vday/st4.${vday}12.24h.gif .
+
 # For my own dev job, copy over a blank GIF file as placeholder for the CCPA
 # gif; do the same thing for NOHRSC png.  Later util.dev/trans_send2rzdm.ksh 
 # will do an "ssh" on emcrzdm to copy over the actual ccpa 24h gif from 
