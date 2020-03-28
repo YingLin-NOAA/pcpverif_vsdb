@@ -3,7 +3,7 @@
 #BSUB -o /gpfs/dell2/ptmp/Ying.Lin/cron.out/tarfortempest.%J
 #BSUB -e /gpfs/dell2/ptmp/Ying.Lin/cron.out/tarfortempest.%J
 #BSUB -n 1
-#BSUB -q "transfer"
+#BSUB -q "dev_transfer"
 #BSUB -W 0:25
 #BSUB -R "rusage[mem=300]"
 #BSUB -R "affinity[core]"
