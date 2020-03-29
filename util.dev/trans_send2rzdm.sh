@@ -3,7 +3,7 @@
 #BSUB -o /gpfs/dell2/ptmp/Ying.Lin/cron.out/verf.send2rzdm.%J
 #BSUB -e /gpfs/dell2/ptmp/Ying.Lin/cron.out/verf.send2rzdm.%J
 #BSUB -n 1
-#BSUB -q "transfer"
+#BSUB -q "dev_transfer"
 #BSUB -W 0:05
 #BSUB -R "rusage[mem=300]"
 #BSUB -R "affinity[core]"
@@ -39,6 +39,11 @@ if [ $domain = conus ]; then
 
   ssh emcrzdm -l wd22yl "mkdir -p $RZDMDIR/$vyear/${vday}"
   scp *.gif *.png index.html wd22yl@emcrzdm:$RZDMDIR/$vyear/${vday}/.
+
+  # copy over the GFS 24h forecast and the ST4 24h accum images to latest/
+  # for the new daily comparisions web site head page.
+  scp gfs.v*.024h.gif wd22yl@emcrzdm:$RZDMDIR/latest/model_latest.gif
+  scp st4.*.24h.gif wd22yl@emcrzdm:$RZDMDIR/latest/anl_latest.gif
   # copy over the CCPA 24h total plot from Yan's directory.  
   # Note that this needs to be done AFTER the "scp *.gif" above - in 
   # ush/indexplot, we put in a dummy as a place holder for the real ccpa gif. 

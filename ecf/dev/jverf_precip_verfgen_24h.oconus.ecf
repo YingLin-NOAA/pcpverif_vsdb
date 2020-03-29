@@ -74,3 +74,6 @@ export DATAROOT=/gpfs/dell2/stmp/$LOGNAME/tmpnwprd
 #  export vday=20140602 
 
 $HOMEverf_precip/jobs/JVERF_PRECIP_VERFGEN_24H
+if [ $bsubnext = Y -a $cronmode = Y ]; then
+  . ~/.bashrc > ~/cron.bashrc.out 2>&1; bsub < $HOMEverf_precip/ecf/dev/jverf_precip_plot.oconus.ecf > /gpfs/dell2/ptmp/Ying.Lin/cron.out/cron.verfplot.oconus.out 2>&1
+fi
