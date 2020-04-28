@@ -48,15 +48,12 @@ typeset -Z3 fhr
 
 for fhr in 24 27 30 33 36 39 42 45 48 51 54 57 60 63 66 69 72 75 78 81 84 87 90 96 102 108 114 120 126 132 138 144 150 157 162 168 174 180
 do
-  for model in nam namx namb \
-               conusnest conusnestx conusnestz gfs gfsx fv3gfs nssl4arw \
-               rap hrrr \
+  for model in nam fv3sar fv3sarx fv3sarda \
+               conusnest gfs nssl4arw rap hrrr \
                conusnmmb conusarw conusarw2 firewxcs \
                cmc cmcglb dwd ecmwf jma metfr ukmo hpc medley \
-               srmean srmeanx srfreqm srfreqmx \
-               ndas ndassoil ndasx ndasxsoil ndasb ndasbsoil \
-               ndasz ndaszsoil ndaszc ndaszcsoil \
-               ndasref ndasrefsoil
+               srmean srfreqm \
+               ndas ndassoil 
   do
     if [ -e $model.v${vday}12.${fhr}h.gif ]; then
       let icnt=icnt+1
