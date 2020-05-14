@@ -32,7 +32,7 @@
       call getgb(11,0,lmax,-1,jpds,jgds,kf,k,kpds,kgds,bit,f1,iret)       
       write(6,*) 'finished getgb, ibaret=', ibaret, ' iret=', iret
 !
-      if (model(1:3).eq.'gfs') then
+      if (model(1:3).eq.'gec') then
         if (kpds(5).ne.59) then
           write(6,*) 'KPDS(5)=', kpds(5),' for ',model, ' STOP!'
           stop

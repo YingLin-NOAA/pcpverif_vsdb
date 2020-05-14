@@ -255,6 +255,21 @@ do
           done
         fi # if err=0 after using wgrib2 to inventory the extracted grib2 file
         
+        if [ $mod3 = gec ]  # For gec00, convert the field from PRATE to APCP
+        then
+          cd $model
+          model_1=$model
+          ls -1 tmp_* | sed s/tmp_//g > pcpconform.list
+          for file in `cat pcpconform.list`
+          do
+            pgm=verf_precip_pcpconform
+            . prep_step
+            $EXECverf_precip/verf_precip_pcpconform $model_1 tmp_$file $OUTDIR/$file 
+            export err=$?; err_chk
+          done
+          cd ../
+        fi
+
       else #it's GRIB1 then.  
         # Most model's GRIB1 QPF files are on GRIB Table #2.  Int'l models have
         # idiosyncratic table numbers.
@@ -323,11 +338,6 @@ done     # end of the cyc loop
 
 set -A afcsthrs $fcsthrs
 
-if [ $mod3 = gec -o $mod3 = gep -o $mod3 = gen ]
-then
-   mod3=gef
-fi
-
 if [ $convert = yes ]; then
   cd $DATA/$model
 #
@@ -364,20 +374,6 @@ EOF
       cp    tmp_${model}_${daysub}${cyc}_000_${fhr0} \
         $OUTDIR/${model}_${daysub}${cyc}_000_${fhr0}
     done  # cyc
-
-  elif [ $mod3 = gef ]
-  then
-      
-    model_1=$model
-
-    ls -1 tmp_* | sed s/tmp_//g > list
-    for file in `cat list`
-    do
-      pgm=verf_precip_pcpconform
-      . prep_step
-      $EXECverf_precip/verf_precip_pcpconform $model_1 tmp_$file $OUTDIR/$file 
-      export err=$?; err_chk
-    done
 
   elif [ $model = ukmo ]
   then
