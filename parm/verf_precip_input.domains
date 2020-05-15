@@ -45,7 +45,7 @@
 #####################################################################################################
 # model|convert|cgd|grd|input file          |output file prefix          |  cycles | shour | ehour | interval |
 #======================================================================================================================
-gec00|convert  |059|000|/gpfs/dell6/emc/modeling/noscrub/emc.enspara/Xianwu.Xue/GEFSv12_TestData/Test_02_20200428/gefs._DAY_/%{cyc}%/atmos/pgrb2p25/gec00.t%{cyc}%z.pgrb2.0p25.f%{fhr}%|_DAY_/gec00_|00 06 12 18|06|84|06|grb2
+gec00|      |   |000|/gpfs/dell6/emc/modeling/noscrub/emc.enspara/Xianwu.Xue/GEFSv12_TestData/Test_03_20200430/gefs._DAY_/%{cyc}%/atmos/pgrb2sp25/gec00.t%{cyc}%z.pgrb2s.0p25.f0%{fhr}%|_DAY_/gec00_|00 06 12 18|06|84|06|06|grb2
 gfs3h|      |   |000|/gpfs/dell1/nco/ops/com/gfs/prod/gfs._DAY_/%{cyc}%/gfs.t%{cyc}%z.pgrb2.0p25.f%{fhr}%|_DAY_/gfs_|00 06 12 18|03|180|03|03|grb2
 gfs6h|      |   |000|/gpfs/dell1/nco/ops/com/gfs/prod/gfs._DAY_/%{cyc}%/gfs.t%{cyc}%z.pgrb2.0p25.f%{fhr}%|_DAY_/gfs_|00 06 12 18|03|180|03|06|grb2
 wgnegfs|      |   |000|/gpfs/dell1/nco/ops/com/gfs/prod/gfs._DAY_/%{cyc}%/gfs.t%{cyc}%z.pgrb2.0p25.f%{fhr}%|_DAY_/wgnegfs_|00 06 12 18|03|180|03|999|grb2
