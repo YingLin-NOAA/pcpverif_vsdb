@@ -164,7 +164,7 @@ else # if we are verifying OCONUS
 
   # Get Alaska QPE file. 
   akqpe=QPE.151.${vday}12.24h
-  cp /dcom/us007003/$vday/wgrbbul/qpe/$akqpe .
+  cp $DCOMROOT/prod/$vday/wgrbbul/qpe/$akqpe .
   err=$?
   if [ $err -eq 0 ]; then
     akflag=YES

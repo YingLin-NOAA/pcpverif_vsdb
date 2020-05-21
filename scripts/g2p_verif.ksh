@@ -6,12 +6,12 @@ set -x
 
 if [ $# = 0 ]; then
   today=`date +%Y%m%d`
-  vday=`/nwprod/util/ush/finddate.sh $today d-8`
+  vday=`finddate.sh $today d-8`
 else
   vday=$1
 fi
 
-vdaym1=`/nwprod/util/ush/finddate.sh $vday d-1`
+vdaym1=`finddate.sh $vday d-1`
 
 yyyy=`echo $vday | cut -c 1-4`
 
