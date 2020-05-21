@@ -104,6 +104,8 @@ do
     GFANL=cmorph.$vdate.hi.gif
   elif [ $region = AK ]; then
     GFANL=akqpe.$vdate.gif
+    # temporary patch to make AK QPE showing up on QPF vs. QPE daily page:
+    cp akqpe.$vdate.gif cmorph.$vdate.ak.gif
   fi
 
   for fhr in ` echo $fhours`
