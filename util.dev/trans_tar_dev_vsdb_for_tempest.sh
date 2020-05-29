@@ -61,7 +61,7 @@ nback2fss06=11
 #nback2fss06=15
 
 configfile=verf_precip_fss_06h_config
-parafss06config=$NOSCRUB/verif_precip/parm.dev/$configfile
+parafss06config=$NOSCRUB/verf_precip/parm.dev/$configfile
 parafss06mods=`cat $parafss06config | grep '=1' | awk '{print $2}' | sed 's/run_//' | sed 's/=1//'`
 
 if [ $# -eq 0 ]; then
